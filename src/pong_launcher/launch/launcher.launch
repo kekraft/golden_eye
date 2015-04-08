@@ -2,8 +2,8 @@
    <!-- Automatically starts the ros core -->
 
    <!-- Starts two random pitch and yaw controllers -->
-  <node pkg="launcher" type="pitch_pub.py" name="pitch_controller"/>
-  <node pkg="launcher" type="yaw_pub.py" name="yaw_controller"/>
+  <node pkg="pong_launcher" type="pitch_pub.py" name="pitch_controller"/>
+  <node pkg="pong_launcher" type="yaw_pub.py" name="yaw_controller"/>
 
   <!-- This gets the serial comm setup between the arduino and the core.
   		Note: The arduino has already been burned with the program at
