@@ -1,8 +1,0 @@
-prefix=/home/gloin/AppliedRob/golden_eye_ws/devel
-
-Name: dc_motor_control
-Description: Description of dc_motor_control
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/gloin/AppliedRob/golden_eye_ws/devel/lib 
-Requires: 

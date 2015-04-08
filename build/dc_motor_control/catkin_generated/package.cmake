@@ -1,7 +1,0 @@
-set(_CATKIN_CURRENT_PACKAGE "dc_motor_control")
-set(dc_motor_control_MAINTAINER "gloin <gloin@todo.todo>")
-set(dc_motor_control_DEPRECATED "")
-set(dc_motor_control_VERSION "0.0.0")
-set(dc_motor_control_BUILD_DEPENDS "roscpp" "rospy" "std_msgs")
-set(dc_motor_control_RUN_DEPENDS "roscpp" "rospy" "std_msgs")
-set(dc_motor_control_BUILDTOOL_DEPENDS "catkin")
