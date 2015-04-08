@@ -255,321 +255,306 @@ clean: gtest/CMakeFiles/gtest_main.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Directory level rules for directory dc_motor_control
+# Directory level rules for directory launcher
 
 # Convenience name for "all" pass in the directory.
-dc_motor_control/all:
-.PHONY : dc_motor_control/all
+launcher/all:
+.PHONY : launcher/all
 
 # Convenience name for "clean" pass in the directory.
-dc_motor_control/clean: dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
-dc_motor_control/clean: dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
-dc_motor_control/clean: dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/clean
-dc_motor_control/clean: dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
-dc_motor_control/clean: dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
-dc_motor_control/clean: dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
-dc_motor_control/clean: dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
-dc_motor_control/clean: dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
-dc_motor_control/clean: dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/clean
-.PHONY : dc_motor_control/clean
+launcher/clean: launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+launcher/clean: launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
+launcher/clean: launcher/CMakeFiles/roscpp_generate_messages_py.dir/clean
+launcher/clean: launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
+launcher/clean: launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
+launcher/clean: launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
+launcher/clean: launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
+launcher/clean: launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
+launcher/clean: launcher/CMakeFiles/std_msgs_generate_messages_py.dir/clean
+.PHONY : launcher/clean
 
 # Convenience name for "preinstall" pass in the directory.
-dc_motor_control/preinstall:
-.PHONY : dc_motor_control/preinstall
+launcher/preinstall:
+.PHONY : launcher/preinstall
 
 #=============================================================================
-# Target rules for target dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir
+# Target rules for target launcher/CMakeFiles/roscpp_generate_messages_cpp.dir
 
 # All Build rule for target.
-dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/all:
-	$(MAKE) -f dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/depend
-	$(MAKE) -f dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/build
+launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/all:
+	$(MAKE) -f launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/depend
+	$(MAKE) -f launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 
 	@echo "Built target roscpp_generate_messages_cpp"
-.PHONY : dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+.PHONY : launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
-dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/rule: cmake_check_build_system
+launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-.PHONY : dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
+.PHONY : launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
 
 # Convenience name for target.
-roscpp_generate_messages_cpp: dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
+roscpp_generate_messages_cpp: launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
 .PHONY : roscpp_generate_messages_cpp
 
 # clean rule for target.
-dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/clean:
-	$(MAKE) -f dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
-.PHONY : dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/clean:
+	$(MAKE) -f launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+.PHONY : launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
 
 # clean rule for target.
-clean: dc_motor_control/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+clean: launcher/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir
+# Target rules for target launcher/CMakeFiles/roscpp_generate_messages_lisp.dir
 
 # All Build rule for target.
-dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/all:
-	$(MAKE) -f dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/depend
-	$(MAKE) -f dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/build
+launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/all:
+	$(MAKE) -f launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/depend
+	$(MAKE) -f launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 
 	@echo "Built target roscpp_generate_messages_lisp"
-.PHONY : dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/all
+.PHONY : launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
-dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/rule: cmake_check_build_system
+launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-.PHONY : dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
+.PHONY : launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
 
 # Convenience name for target.
-roscpp_generate_messages_lisp: dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
+roscpp_generate_messages_lisp: launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
 .PHONY : roscpp_generate_messages_lisp
 
 # clean rule for target.
-dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/clean:
-	$(MAKE) -f dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
-.PHONY : dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
+launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/clean:
+	$(MAKE) -f launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
+.PHONY : launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
 
 # clean rule for target.
-clean: dc_motor_control/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
+clean: launcher/CMakeFiles/roscpp_generate_messages_lisp.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir
+# Target rules for target launcher/CMakeFiles/roscpp_generate_messages_py.dir
 
 # All Build rule for target.
-dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/all:
-	$(MAKE) -f dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/build.make dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/depend
-	$(MAKE) -f dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/build.make dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/build
+launcher/CMakeFiles/roscpp_generate_messages_py.dir/all:
+	$(MAKE) -f launcher/CMakeFiles/roscpp_generate_messages_py.dir/build.make launcher/CMakeFiles/roscpp_generate_messages_py.dir/depend
+	$(MAKE) -f launcher/CMakeFiles/roscpp_generate_messages_py.dir/build.make launcher/CMakeFiles/roscpp_generate_messages_py.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 
 	@echo "Built target roscpp_generate_messages_py"
-.PHONY : dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/all
+.PHONY : launcher/CMakeFiles/roscpp_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
-dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/rule: cmake_check_build_system
+launcher/CMakeFiles/roscpp_generate_messages_py.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 launcher/CMakeFiles/roscpp_generate_messages_py.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-.PHONY : dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/rule
+.PHONY : launcher/CMakeFiles/roscpp_generate_messages_py.dir/rule
 
 # Convenience name for target.
-roscpp_generate_messages_py: dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/rule
+roscpp_generate_messages_py: launcher/CMakeFiles/roscpp_generate_messages_py.dir/rule
 .PHONY : roscpp_generate_messages_py
 
 # clean rule for target.
-dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/clean:
-	$(MAKE) -f dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/build.make dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/clean
-.PHONY : dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/clean
+launcher/CMakeFiles/roscpp_generate_messages_py.dir/clean:
+	$(MAKE) -f launcher/CMakeFiles/roscpp_generate_messages_py.dir/build.make launcher/CMakeFiles/roscpp_generate_messages_py.dir/clean
+.PHONY : launcher/CMakeFiles/roscpp_generate_messages_py.dir/clean
 
 # clean rule for target.
-clean: dc_motor_control/CMakeFiles/roscpp_generate_messages_py.dir/clean
+clean: launcher/CMakeFiles/roscpp_generate_messages_py.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir
+# Target rules for target launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir
 
 # All Build rule for target.
-dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all:
-	$(MAKE) -f dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/depend
-	$(MAKE) -f dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
+launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all:
+	$(MAKE) -f launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/depend
+	$(MAKE) -f launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 
 	@echo "Built target rosgraph_msgs_generate_messages_cpp"
-.PHONY : dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+.PHONY : launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
-dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
+launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-.PHONY : dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
+.PHONY : launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
 
 # Convenience name for target.
-rosgraph_msgs_generate_messages_cpp: dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
+rosgraph_msgs_generate_messages_cpp: launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
 .PHONY : rosgraph_msgs_generate_messages_cpp
 
 # clean rule for target.
-dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean:
-	$(MAKE) -f dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
-.PHONY : dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
+launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean:
+	$(MAKE) -f launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
+.PHONY : launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
 
 # clean rule for target.
-clean: dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
+clean: launcher/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir
+# Target rules for target launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir
 
 # All Build rule for target.
-dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all:
-	$(MAKE) -f dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/depend
-	$(MAKE) -f dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
+launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all:
+	$(MAKE) -f launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/depend
+	$(MAKE) -f launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 
 	@echo "Built target rosgraph_msgs_generate_messages_lisp"
-.PHONY : dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+.PHONY : launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
-dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
+launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-.PHONY : dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
+.PHONY : launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
 
 # Convenience name for target.
-rosgraph_msgs_generate_messages_lisp: dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
+rosgraph_msgs_generate_messages_lisp: launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
 .PHONY : rosgraph_msgs_generate_messages_lisp
 
 # clean rule for target.
-dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean:
-	$(MAKE) -f dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
-.PHONY : dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
+launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean:
+	$(MAKE) -f launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
+.PHONY : launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
 
 # clean rule for target.
-clean: dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
+clean: launcher/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir
+# Target rules for target launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir
 
 # All Build rule for target.
-dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all:
-	$(MAKE) -f dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/depend
-	$(MAKE) -f dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
+launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all:
+	$(MAKE) -f launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/depend
+	$(MAKE) -f launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 
 	@echo "Built target rosgraph_msgs_generate_messages_py"
-.PHONY : dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+.PHONY : launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
-dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule: cmake_check_build_system
+launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-.PHONY : dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
+.PHONY : launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
 
 # Convenience name for target.
-rosgraph_msgs_generate_messages_py: dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
+rosgraph_msgs_generate_messages_py: launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
 .PHONY : rosgraph_msgs_generate_messages_py
 
 # clean rule for target.
-dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean:
-	$(MAKE) -f dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
-.PHONY : dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
+launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean:
+	$(MAKE) -f launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
+.PHONY : launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
 
 # clean rule for target.
-clean: dc_motor_control/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
+clean: launcher/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir
+# Target rules for target launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir
 
 # All Build rule for target.
-dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/all:
-	$(MAKE) -f dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/depend
-	$(MAKE) -f dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
+launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/all:
+	$(MAKE) -f launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/depend
+	$(MAKE) -f launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 
 	@echo "Built target std_msgs_generate_messages_cpp"
-.PHONY : dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+.PHONY : launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
-dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
+launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-.PHONY : dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
+.PHONY : launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
 
 # Convenience name for target.
-std_msgs_generate_messages_cpp: dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
+std_msgs_generate_messages_cpp: launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
 .PHONY : std_msgs_generate_messages_cpp
 
 # clean rule for target.
-dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean:
-	$(MAKE) -f dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
-.PHONY : dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
+launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean:
+	$(MAKE) -f launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
+.PHONY : launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
 
 # clean rule for target.
-clean: dc_motor_control/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
+clean: launcher/CMakeFiles/std_msgs_generate_messages_cpp.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir
+# Target rules for target launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir
 
 # All Build rule for target.
-dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/all:
-	$(MAKE) -f dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/depend
-	$(MAKE) -f dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
+launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/all:
+	$(MAKE) -f launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/depend
+	$(MAKE) -f launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 
 	@echo "Built target std_msgs_generate_messages_lisp"
-.PHONY : dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+.PHONY : launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
-dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
+launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-.PHONY : dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
+.PHONY : launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
 
 # Convenience name for target.
-std_msgs_generate_messages_lisp: dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
+std_msgs_generate_messages_lisp: launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
 .PHONY : std_msgs_generate_messages_lisp
 
 # clean rule for target.
-dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean:
-	$(MAKE) -f dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
-.PHONY : dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
+launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean:
+	$(MAKE) -f launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
+.PHONY : launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
 
 # clean rule for target.
-clean: dc_motor_control/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
+clean: launcher/CMakeFiles/std_msgs_generate_messages_lisp.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir
+# Target rules for target launcher/CMakeFiles/std_msgs_generate_messages_py.dir
 
 # All Build rule for target.
-dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/all:
-	$(MAKE) -f dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/build.make dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/depend
-	$(MAKE) -f dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/build.make dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/build
+launcher/CMakeFiles/std_msgs_generate_messages_py.dir/all:
+	$(MAKE) -f launcher/CMakeFiles/std_msgs_generate_messages_py.dir/build.make launcher/CMakeFiles/std_msgs_generate_messages_py.dir/depend
+	$(MAKE) -f launcher/CMakeFiles/std_msgs_generate_messages_py.dir/build.make launcher/CMakeFiles/std_msgs_generate_messages_py.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 
 	@echo "Built target std_msgs_generate_messages_py"
-.PHONY : dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/all
+.PHONY : launcher/CMakeFiles/std_msgs_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
-dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/rule: cmake_check_build_system
+launcher/CMakeFiles/std_msgs_generate_messages_py.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 launcher/CMakeFiles/std_msgs_generate_messages_py.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/gloin/AppliedRob/golden_eye_ws/build/CMakeFiles 0
-.PHONY : dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/rule
+.PHONY : launcher/CMakeFiles/std_msgs_generate_messages_py.dir/rule
 
 # Convenience name for target.
-std_msgs_generate_messages_py: dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/rule
+std_msgs_generate_messages_py: launcher/CMakeFiles/std_msgs_generate_messages_py.dir/rule
 .PHONY : std_msgs_generate_messages_py
 
 # clean rule for target.
-dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/clean:
-	$(MAKE) -f dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/build.make dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/clean
-.PHONY : dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/clean
+launcher/CMakeFiles/std_msgs_generate_messages_py.dir/clean:
+	$(MAKE) -f launcher/CMakeFiles/std_msgs_generate_messages_py.dir/build.make launcher/CMakeFiles/std_msgs_generate_messages_py.dir/clean
+.PHONY : launcher/CMakeFiles/std_msgs_generate_messages_py.dir/clean
 
 # clean rule for target.
-clean: dc_motor_control/CMakeFiles/std_msgs_generate_messages_py.dir/clean
+clean: launcher/CMakeFiles/std_msgs_generate_messages_py.dir/clean
 .PHONY : clean
-
-#=============================================================================
-# Directory level rules for directory servo_controlor
-
-# Convenience name for "all" pass in the directory.
-servo_controlor/all:
-.PHONY : servo_controlor/all
-
-# Convenience name for "clean" pass in the directory.
-servo_controlor/clean:
-.PHONY : servo_controlor/clean
-
-# Convenience name for "preinstall" pass in the directory.
-servo_controlor/preinstall:
-.PHONY : servo_controlor/preinstall
 
 #=============================================================================
 # Special targets to cleanup operation of make.

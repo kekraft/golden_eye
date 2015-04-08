@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "launcher")
+set(launcher_MAINTAINER "gloin <gloin@todo.todo>")
+set(launcher_DEPRECATED "")
+set(launcher_VERSION "0.0.0")
+set(launcher_BUILD_DEPENDS "roscpp" "rospy" "std_msgs")
+set(launcher_RUN_DEPENDS "roscpp" "rospy" "std_msgs")
+set(launcher_BUILDTOOL_DEPENDS "catkin")

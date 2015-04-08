@@ -1,2 +1,2 @@
-dc_motor_control:servo_controlor
+launcher
 -DCATKIN_DEVEL_PREFIX=/home/gloin/AppliedRob/golden_eye_ws/devel -DCMAKE_INSTALL_PREFIX=/home/gloin/AppliedRob/golden_eye_ws/install -G Unix Makefiles
