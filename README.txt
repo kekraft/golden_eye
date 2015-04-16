@@ -1,0 +1,22 @@
+#To start the camera:
+# open terminal
+# source the golden eye ws
+# run the following commands
+cd ~/AppliedRob/golden_eye_ws/src/camera_umd/uvc_camera/launch
+~/AppliedRob/golden_eye_ws/src/camera_umd/uvc_camera/launch
+
+# at this point you can start the camera node by doing the following
+# start new terminal
+# source the golden eye ws
+# run the following command
+rosrun pong_vision updated_cup_detection.py 
+
+
+### to get kinect up and running
+# run this command
+roslaunch freenect_launch freenect.launch
+
+# open up rviz to see it or just bag these files
+# if you use rvz change map to be camera optical depth to be frame of reference
+/camera/depth/image_rect_raw
+/camera/rgb/image_rect_color

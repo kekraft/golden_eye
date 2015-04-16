@@ -306,6 +306,9 @@ class Pong_Vision:
             # if the 'c' key is pressed, break from the loop
             elif key == ord("c"):
                 break
+
+            elif key == ord("s"):
+                cv2.imwrite("saved", image)
          
                
         # close all open windows
@@ -323,8 +326,9 @@ class Pong_Vision:
         bridge = CvBridge()
         cv_image = bridge.imgmsg_to_cv2(img_msg, "bgr8")
 
-        # cv2.imshow('video', cv_image)
-        # cv2.waitKey(3)
+        cv2.imshow('Live feed video', cv_image)
+        cv2.imwrite("saved.jpg", cv_image)
+        cv2.waitKey(3)
 
         edged = self.blurred_edge(cv_image, 5)
         # cv2.imshow("Blurred Edged Scene", edged)
