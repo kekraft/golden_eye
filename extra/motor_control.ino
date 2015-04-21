@@ -1,5 +1,5 @@
-int MotorA = 3;
-int MotorB = 5;
+int MotorA = 9;
+int MotorB = 10;
 int val = 0;
 char motorSelectA = 0;
 char motorSelectB = 0;
