@@ -1,0 +1,9 @@
+<launch>
+   <!-- Start the web camera driver node -->
+  
+  <node pkg="uvc_camera" type="uvc_camera_node" name="camera_node" />
+
+  <!-- Start the actual vision script -->
+  <node pkg="pong_vision" type="updated_cup_detection.py" name="cup_detector" />
+
+ </launch>

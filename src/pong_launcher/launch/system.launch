@@ -1,0 +1,18 @@
+<launch>
+   <!-- Automatically starts the ros core -->
+
+   <!-- Starts two random pitch and yaw controllers -->
+  <node pkg="pong_launcher" type="pitch_pub.py" name="pitch_controller"/>
+  <node pkg="pong_launcher" type="yaw_pub.py" name="yaw_controller"/>
+
+  <!-- This gets the serial comm setup between the arduino and the core.
+  		Note: The arduino has already been burned with the program at
+  				this point. -->
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+    <param name="port" value="/dev/ttyACM1"/>
+    <param name="baud" value="57600"/>
+  
+  <node pkg="uvc_camera" type="uvc_camera_node" name="camera_node"/>
+
+  <node pkg=""
+ </launch>
