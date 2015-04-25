@@ -326,18 +326,20 @@ class Pong_Vision:
         bridge = CvBridge()
         cv_image = bridge.imgmsg_to_cv2(img_msg, "bgr8")
 
-        cv2.imshow('Live feed video', cv_image)
+        cv2.imshow('Live Feed: Raw Image', cv_image)
         cv2.imwrite("saved.jpg", cv_image)
-        cv2.waitKey(3)
+        cv2.waitKey(1)
 
         edged = self.blurred_edge(cv_image, 5)
         # cv2.imshow("Blurred Edged Scene", edged)
         # cv2.waitKey(1)
 
-        if not self.interacting:
-            print "In interacting mode"
-            self.interacting = True
-            self.user_selection(edged)
+        # instantiates interactive mode for selecting regions of interest by the
+        # user if we do cup selection by hand
+        # if not self.interacting:
+        #     print "In interacting mode"
+        #     self.interacting = True
+        #     self.user_selection(edged)
 
 
 
