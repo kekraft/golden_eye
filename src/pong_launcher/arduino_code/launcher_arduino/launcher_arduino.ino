@@ -21,6 +21,7 @@ Purpose: This arduino file handles all the mechanisms for the robot pong launche
 #endif
 
 #include <Servo.h> 
+
 #include <ros.h>
 #include <std_msgs/UInt16.h>
 #include <std_msgs/Float64.h>
@@ -28,10 +29,17 @@ Purpose: This arduino file handles all the mechanisms for the robot pong launche
 #include <std_msgs/String.h>
 #include <std_msgs/Bool.h>
 
-//#include <PID_v1.h>
+#include <PID_v1.h>
+
+
 
 //Pin definitions
-//Motor stuff
+//Motor stuff, enum class
+int MotorA = 67;
+int MotorB = 68;
+int MotorC = 69;
+
+
 int A1top = 3;
 int A2top = 4;
 int A3top = 5;
@@ -52,6 +60,7 @@ int C3top = A8;
 int C1bot = A1;
 int C2bot = A2;
 int C3bot = A3;
+
 //Hall effect sensors
 int ha1 = 2;
 int ha2 = A5;
@@ -66,23 +75,29 @@ int hc2 = 30;
 int hc3 = 31;
 
 //Hall effect sensor variables
-volatile int timeoldA = 0, timeoldB = 0, timeoldC = 0;
+volatile double curSpeedA = 0.0, curSpeedB = 0.0, curSpeedC = 0.0;
+volatile double oldSpeedA = 0.0, oldSpeedB = 0.0, oldSpeedC = 0.0;
+volatile int timeoldA = 0, timeoldB = 0, timeoldC = 0, time = 0;
 volatile int hallA1 = 0, hallA2 = 0, hallA3 = 0;
 volatile int hallB1 = 0, hallB2 = 0, hallB3 = 0;
 volatile int hallC1 = 0, hallC2 = 0, hallC3 = 0;
 
 //Commute variables
-int 1top, 2top, 3top;
-int 1bot, 2bot, 3bot;
-int dir
-char motor
+int top_1, top_2, top_3;
+int bot_1, bot_2, bot_3;
+int spd;
+int dir;
+char motr;
 
 //PID variables
 //char motorSelect = 0;
 double Setpointa = 0, Inputa;
 double Setpointb = 0, Inputb;
 double Setpointc = 0, Inputc;
-volatile double Outputa = 0, Outputb = 0, Outputc = 0;
+// The PID initializer was NOT liking the volatile qualifier
+
+double Outputa = 0, Outputb = 0, Outputc = 0;
+volatile double Outputa_temp = 0, Outputb_temp = 0, Outputc_temp = 0;
 
 double Kp = 1, Kd = 0.25, Ki = .05;
 
@@ -94,172 +109,157 @@ PID cPID(&Inputc, &Outputc, &Setpointc, Kp, Kd, Ki, DIRECT);
 ros::NodeHandle  nh;
 
 std_msgs::String state_msg;
-ros::Publisher state_pub("launcher/state", &state_msg);
+ros::Publisher pub_state("launcher/state", &state_msg);
 
-void setMotorSpeed(int motor, double speed){
-  // Set the motor specified to the speed given.
-  bool is_set = false;
-  while (!is_set){
-    Inputa = curspeedA;
-    Inputb = curspeedB;
-    Inputc = curspeedC;
-
-    Setpointa = motorSpeedA;
-    Setpointb = motorSpeedB;
-    Setpointc = motorSpeedC;
-    // use hall effect and pid to tune
-    aPID.compute();
-    bPID.compute();
-    cPID.compute();
-
-	if ((curspeedA - oldspeedA) < 0.05) && ((curspeedB - oldspeedB) < 0.05) && ((curspeedC - oldspeedC) < 0.05){
-		is_set = true;
-	}
-  
-}
-
-void commute(motor, hall1, hall2, hall3, dir){
-
+// Takes the current state from the interrupt service routine and 
+//  decides on the next commute state
+//
+// Speed has to be volatile bc needs to be persistent through service
+//   routines
+//
+// Each speed is actually output from pid
+void commute(int motor, int hall1, int hall2, int hall3, int sdir){
+        
 	switch (motor) {
 	case 1:
-		1top = A1top;
-		2top = A2top;
-		3top = A3top;
-		1bot = A1bot;
-		2bot = A2bot;
-		3bot = A3bot;
-		spd = Outputa;
+		top_1 = A1top;
+		top_2 = A2top;
+		top_3 = A3top;
+		bot_1 = A1bot;
+		bot_2 = A2bot;
+		bot_3 = A3bot;
+		spd = Outputa_temp;
 		break;
 	case 2:
-		1top = B1top;
-		2top = B2top;
-		3top = B3top;
-		1bot = B1bot;
-		2bot = B2bot;
-		3bot = B3bot;
-		spd = Outputb;
+		top_1 = B1top;
+		top_2 = B2top;
+		top_3 = B3top;
+		bot_1 = B1bot;
+		bot_2 = B2bot;
+		bot_3 = B3bot;
+		spd = Outputb_temp;
 		break;
 	case 3:
-		1top = C1top;
-		2top = C2top;
-		3top = C3top;
-		1bot = C1bot;
-		2bot = C2bot;
-		3bot = C3bot;
-		spd = Outputc;
+		top_1 = C1top;
+		top_2 = C2top;
+		top_3 = C3top;
+		bot_1 = C1bot;
+		bot_2 = C2bot;
+		bot_3 = C3bot;
+		spd = Outputc_temp;
 		break;
 	}
 
 	if ( dir == 1 ){ //Forward
 		//Case 1
 		if ((hall1 == HIGH) && (hall2 == LOW) && (hall3 == HIGH)){
-			analogWrite(1top, spd);
-			analogWrite(2top, 0);
-			analogWrite(3top, 0);
-			digitalWrite(1bot, HIGH);
-			digitalWrite(2bot, HIGH);
-			digitalWrite(3bot, LOW);
+			analogWrite(top_1, spd);
+			analogWrite(top_2, 0);
+			analogWrite(top_3, 0);
+			digitalWrite(bot_1, HIGH);
+			digitalWrite(bot_2, HIGH);
+			digitalWrite(bot_3, LOW);
 		}
 		//Case 2
 		else if ((hall1 == HIGH) && (hall2 == LOW) && (hall3 == LOW)){
-			analogWrite(1top, spd);
-			analogWrite(2top, 0);
-			analogWrite(3top, 0);
-			digitalWrite(1bot, HIGH);
-			digitalWrite(2bot, LOW);
-			digitalWrite(3bot, HIGH);
+			analogWrite(top_1, spd);
+			analogWrite(top_2, 0);
+			analogWrite(top_3, 0);
+			digitalWrite(bot_1, HIGH);
+			digitalWrite(bot_2, LOW);
+			digitalWrite(bot_3, HIGH);
 		}
 		//Case 3
 		else if ((hall1 == HIGH) && (hall2 == HIGH) && (hall3 == LOW)){
-			analogWrite(1top, 0);
-			analogWrite(2top, spd);
-			analogWrite(3top, 0);
-			digitalWrite(1bot, LOW);
-			digitalWrite(2bot, HIGH);
-			digitalWrite(3bot, HIGH);
+			analogWrite(top_1, 0);
+			analogWrite(top_2, spd);
+			analogWrite(top_3, 0);
+			digitalWrite(bot_1, LOW);
+			digitalWrite(bot_2, HIGH);
+			digitalWrite(bot_3, HIGH);
 		}
 		//Case 4
 		else if ((hall1 == LOW) && (hall2 == HIGH) && (hall3 == LOW)){
-			analogWrite(1top, 0);
-			analogWrite(2top, spd);
-			analogWrite(3top, 0);
-			digitalWrite(1bot, HIGH);
-			digitalWrite(2bot, HIGH);
-			digitalWrite(3bot, LOW);
+			analogWrite(top_1, 0);
+			analogWrite(top_2, spd);
+			analogWrite(top_3, 0);
+			digitalWrite(bot_1, HIGH);
+			digitalWrite(bot_2, HIGH);
+			digitalWrite(bot_3, LOW);
 		}
 		//Case 5
 		else if ((hall1 == LOW) && (hall2 == HIGH) && (hall3 == HIGH)){
-			analogWrite(1top, 0);
-			analogWrite(2top, 0);
-			analogWrite(3top, spd);
-			digitalWrite(1bot, HIGH);
-			digitalWrite(2bot, LOW);
-			digitalWrite(3bot, HIGH);
+			analogWrite(top_1, 0);
+			analogWrite(top_2, 0);
+			analogWrite(top_3, spd);
+			digitalWrite(bot_1, HIGH);
+			digitalWrite(bot_2, LOW);
+			digitalWrite(bot_3, HIGH);
 		}
 		//Case 6
 		else if ((hall1 == LOW) && (hall2 == LOW) && (hall3 == HIGH)){
-			analogWrite(1top, 0);
-			analogWrite(2top, 0);
-			analogWrite(3top, spd);
-			digitalWrite(1bot, LOW);
-			digitalWrite(2bot, HIGH);
-			digitalWrite(3bot, HIGH);
+			analogWrite(top_1, 0);
+			analogWrite(top_2, 0);
+			analogWrite(top_3, spd);
+			digitalWrite(bot_1, LOW);
+			digitalWrite(bot_2, HIGH);
+			digitalWrite(bot_3, HIGH);
 		}
 	}
 	else{ //Reverse
 		//Case 1
 		if ((hall1 == HIGH) && (hall2 == LOW) && (hall3 == HIGH)){
-			analogWrite(1top, 0);
-			analogWrite(2top, spd);
-			analogWrite(3top, 0);
-			digitalWrite(1bot, HIGH);
-			digitalWrite(2bot, HIGH);
-			digitalWrite(3bot, LOW);
+			analogWrite(top_1, 0);
+			analogWrite(top_2, spd);
+			analogWrite(top_3, 0);
+			digitalWrite(bot_1, HIGH);
+			digitalWrite(bot_2, HIGH);
+			digitalWrite(bot_3, LOW);
 		}
 		//Case 2
 		else if ((hall1 == HIGH) && (hall2 == LOW) && (hall3 == LOW)){
-			analogWrite(1top, spd);
-			analogWrite(2top, 0);
-			analogWrite(3top, 0);
-			digitalWrite(1bot, LOW);
-			digitalWrite(2bot, LOW);
-			digitalWrite(3bot, HIGH);
+			analogWrite(top_1, spd);
+			analogWrite(top_2, 0);
+			analogWrite(top_3, 0);
+			digitalWrite(bot_1, LOW);
+			digitalWrite(bot_2, LOW);
+			digitalWrite(bot_3, HIGH);
 		}
 		//Case 3
 		else if ((hall1 == HIGH) && (hall2 == HIGH) && (hall3 == LOW)){
-			analogWrite(1top, 0);
-			analogWrite(2top, 0);
-			analogWrite(3top, spd);
-			digitalWrite(1bot, LOW);
-			digitalWrite(2bot, HIGH);
-			digitalWrite(3bot, HIGH);
+			analogWrite(top_1, 0);
+			analogWrite(top_2, 0);
+			analogWrite(top_3, spd);
+			digitalWrite(bot_1, LOW);
+			digitalWrite(bot_2, HIGH);
+			digitalWrite(bot_3, HIGH);
 		}
 		//Case 4
 		else if ((hall1 == LOW) && (hall2 == HIGH) && (hall3 == LOW)){
-			analogWrite(1top, spd);
-			analogWrite(2top, 0);
-			analogWrite(3top, 0);
-			digitalWrite(1bot, HIGH);
-			digitalWrite(2bot, HIGH);
-			digitalWrite(3bot, LOW);
+			analogWrite(top_1, spd);
+			analogWrite(top_2, 0);
+			analogWrite(top_3, 0);
+			digitalWrite(bot_1, HIGH);
+			digitalWrite(bot_2, HIGH);
+			digitalWrite(bot_3, LOW);
 		}
 		//Case 5
 		else if ((hall1 == LOW) && (hall2 == HIGH) && (hall3 == HIGH)){
-			analogWrite(1top, spd);
-			analogWrite(2top, 0);
-			analogWrite(3top, 0);
-			digitalWrite(1bot, HIGH);
-			digitalWrite(2bot, LOW);
-			digitalWrite(3bot, HIGH);
+			analogWrite(top_1, spd);
+			analogWrite(top_2, 0);
+			analogWrite(top_3, 0);
+			digitalWrite(bot_1, HIGH);
+			digitalWrite(bot_2, LOW);
+			digitalWrite(bot_3, HIGH);
 		}
 		//Case 6
 		else if ((hall1 == LOW) && (hall2 == LOW) && (hall3 == HIGH)){
-			analogWrite(1top, 0);
-			analogWrite(2top, spd);
-			analogWrite(3top, 0);
-			digitalWrite(1bot, LOW);
-			digitalWrite(2bot, HIGH);
-			digitalWrite(3bot, HIGH);
+			analogWrite(top_1, 0);
+			analogWrite(top_2, spd);
+			analogWrite(top_3, 0);
+			digitalWrite(bot_1, LOW);
+			digitalWrite(bot_2, HIGH);
+			digitalWrite(bot_3, HIGH);
 		}
 	}
 }
@@ -269,25 +269,42 @@ void motor_controls_cb(const geometry_msgs::Vector3& cmd_msg){
 	// publish command saying that we are adjusting
 	std_msgs::String str;
 	str.data = "adjusting";
-	state_pub.publish(&str);
+	pub_state.publish(&str);
 
-	// Get motor speed A, B, and C from the message
-	double motorSpeedA = cmd_msg.x;
-	double motorSpeedB = cmd_msg.y;
-	double motorSpeedC = cmd_msg.z;
+	// Get motor speed A, B, and C from the message and set
+        Setpointa = cmd_msg.x;
+        Setpointb = cmd_msg.y;
+        Setpointc = cmd_msg.z;
 
-	// Set each motor speed, verification done in setting motor speed
-	setMotorSpeed(MotorA, motorSpeedA);
-	setMotorSpeed(MotorB, motorSpeedB);
-	setMotorSpeed(MotorC, motorSpeedC);
+	// verification done in loop, running constantly through PID library
 
 	// publish command alerting the master system that we are ready
 	//  std_msgs::String str;
 	str.data = "ready";
-	state_pub.publish(&str);
+	pub_state.publish(&str);
 }
 
 ros::Subscriber<geometry_msgs::Vector3> motor_sub("launcher/motor_vel/", motor_controls_cb);
+
+void pid_controls_cb(const geometry_msgs::Vector3& pid_msg){
+
+	// publish command saying that we are adjusting
+	std_msgs::String str;
+	str.data = "Reading PID";
+	pub_state.publish(&str);
+
+	// Get motor speed A, B, and C from the message
+	Kp = pid_msg.x;
+	Kd = pid_msg.y;
+	Ki = pid_msg.z;
+
+	// publish command alerting the master system that we are ready
+	//  std_msgs::String str;
+	str.data = "Updated PID";
+	pub_state.publish(&str);
+}
+
+ros::Subscriber<geometry_msgs::Vector3> pid_sub("launcher/pid_val/", pid_controls_cb);
 
 void setup(){
 	//Pinmodes for the motor's PWM
@@ -340,50 +357,93 @@ void setup(){
 	cPID.SetMode(AUTOMATIC);
 
 	nh.initNode();
+        nh.advertise(pub_state);
 	nh.subscribe(motor_sub);
+        nh.subscribe(pib_sub);
 }
 
 void loop(){
   // ros necesisity
   nh.spinOnce();
-  delay(1);
+  // don't think this is neccessary
+//  delay(1);
+  
+  // from the hall effect sensors (speed)  
+  Inputa = curSpeedA;
+  Inputb = curSpeedB;
+  Inputc = curSpeedC;
+    
+  // use hall effect and pid to tune
+  //  which updates OutputA, OutputB, OutputC
+  aPID.Compute();
+  bPID.Compute();
+  cPID.Compute();
+  
 }
 
+
+
 void A(){
+        // Turn off motor output
+  
+        // Updating speed based off current hall reading
 	hallA1 = digitalRead(ha1);
 	hallA2 = digitalRead(ha2);
 	hallA3 = digitalRead(ha3);
 
-	time = millis();
-	curspeedA = 1/(3 * (time - timeold));
-	timeoldA = time;
-	oldspeedA = curspeedA;
+//        hallAchanged = true;
 
-	commute(1, hallC1, hallC2, hallC3, 1);	
+	time = millis();
+	curSpeedA = 1/(3 * (time - timeoldA));
+	timeoldA = time;
+	oldSpeedA = curSpeedA;
+
+        // Potentially have the rest of this code in the loop as well
+        
+        // delay in isr, kind of dangerous
+        delayMicroseconds(1);
+         
+        // commuting motor for motor velocity
+        commute(1, hallA1, hallA2, hallA3, 1);
 }
 
 void B() {
+        // Turn off motor output
+  
+        // Updating speed based off current hall readings
 	hallB1 = digitalRead(hb1);
 	hallB2 = digitalRead(hb2);
 	hallB3 = digitalRead(hb3);
 
 	time = millis();
-	curspeedB = 1/(3 * (time - timeold));
+	curSpeedB = 1/(3 * (time - timeoldB));
 	timeoldB = time;
-	oldspeedB = curspeedB;
+	oldSpeedB = curSpeedB;
 
-	commute(2, hallC1, hallC2, hallC3, 1);
+        // delay in isr, kind of dangerous
+        delayMicroseconds(1);
+         
+        // commuting motor for motor velocity
+        commute(2, hallB1, hallB2, hallB3, 1);
 }
 
 void C() {
+        // Turn off motor output
+        
+        // Updating speed based off current hall reading
 	hallC1 = digitalRead(hc1);
 	hallC2 = digitalRead(hc2);
 	hallC3 = digitalRead(hc3);
 
 	time = millis();
-	curspeedC = 1/(3 * (time - timeold));
+	curSpeedC = 1/(3 * (time - timeoldC));
 	timeoldC = time;
-	oldspeedC = curspeedC;
-	
+	oldSpeedC = curSpeedC;
+
+        // delay in isr, kind of dangerous
+        delayMicroseconds(1);	
+
+        // commuting motor for motor velocity
 	commute(3, hallC1, hallC2, hallC3, 1);
 }
+
