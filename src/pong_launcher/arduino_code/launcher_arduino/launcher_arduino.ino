@@ -31,6 +31,8 @@ Purpose: This arduino file handles all the mechanisms for the robot pong launche
 
 #include <PID_v1.h>
 
+//#include "motor_struct.h"
+
 
 
 //Pin definitions
@@ -60,6 +62,27 @@ int C3top = A8;
 int C1bot = A1;
 int C2bot = A2;
 int C3bot = A3;
+
+//struct Motor_Struct {
+//  int top1;
+//  int top2;
+//  int top3;
+//  int bot1;
+//  int bot2;
+//  int bot3;
+//  
+//  int h1;
+//  int h2;
+//  int h3;
+//  
+//  volatile double curSpeed;
+//  
+//  volatile int timeold;
+//  
+//  volatile int hall1, hall2, hall3;
+//  
+//  double pid_setpoint, pid_input, pid_output;
+//};
 
 //Hall effect sensors
 int ha1 = 2;
@@ -434,7 +457,9 @@ void A(){
 	hallA2 = digitalRead(ha2);
 	hallA3 = digitalRead(ha3);
 	time = millis();
-	curSpeedA = 1/(3 * (time - timeoldA));
+	curSpeedA = 1/(3 * (time - timeoldA)); // just remove the 3
+        // 3 digital rotations per single mechanical rotation
+        curSpeedA *= 3;
 	timeoldA = time;
 	oldSpeedA = curSpeedA;
 
@@ -457,7 +482,9 @@ void B() {
 	hallB3 = digitalRead(hb3);
 
 	time = millis();
-	curSpeedB = 1/(3 * (time - timeoldB));
+	curSpeedB = 1/(3 * (time - timeoldB)); // just remove the 3
+        // 3 digital rotations per single mechanical rotation
+        curSpeedB *= 3;
 	timeoldB = time;
 	oldSpeedB = curSpeedB;
 
@@ -478,7 +505,9 @@ void C() {
 	hallC3 = digitalRead(hc3);
 
 	time = millis();
-	curSpeedC = 1/(3 * (time - timeoldC));
+	curSpeedC = 1/(3 * (time - timeoldC)); // just remove the 3
+        // 3 digital rotations per single mechanical rotation
+        curSpeedC *= 3;
 	timeoldC = time;
 	oldSpeedC = curSpeedC;
 
