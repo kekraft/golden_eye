@@ -35,9 +35,9 @@ Purpose: This arduino file handles all the mechanisms for the robot pong launche
 
 //Pin definitions
 //Motor stuff, enum class
-int MotorA = 67;
-int MotorB = 68;
-int MotorC = 69;
+const int MotorA = 67;
+const int MotorB = 68;
+const int MotorC = 69;
 
 
 int A1top = 3;
@@ -121,7 +121,7 @@ ros::Publisher pub_state("launcher/state", &state_msg);
 void commute(int motor, int hall1, int hall2, int hall3, int sdir){
         
 	switch (motor) {
-	case 1:
+	case MotorA:
 		top_1 = A1top;
 		top_2 = A2top;
 		top_3 = A3top;
@@ -130,7 +130,7 @@ void commute(int motor, int hall1, int hall2, int hall3, int sdir){
 		bot_3 = A3bot;
 		spd = Outputa_temp;
 		break;
-	case 2:
+	case MotorB:
 		top_1 = B1top;
 		top_2 = B2top;
 		top_3 = B3top;
@@ -139,7 +139,7 @@ void commute(int motor, int hall1, int hall2, int hall3, int sdir){
 		bot_3 = B3bot;
 		spd = Outputb_temp;
 		break;
-	case 3:
+	case MotorC:
 		top_1 = C1top;
 		top_2 = C2top;
 		top_3 = C3top;
@@ -264,6 +264,47 @@ void commute(int motor, int hall1, int hall2, int hall3, int sdir){
 	}
 }
 
+void stop_motor(int motor){
+  // Select motor variables based off motor
+  switch (motor) {
+	case MotorA:
+		top_1 = A1top;
+		top_2 = A2top;
+		top_3 = A3top;
+		bot_1 = A1bot;
+		bot_2 = A2bot;
+		bot_3 = A3bot;
+		spd = Outputa_temp;
+		break;
+	case MotorB:
+		top_1 = B1top;
+		top_2 = B2top;
+		top_3 = B3top;
+		bot_1 = B1bot;
+		bot_2 = B2bot;
+		bot_3 = B3bot;
+		spd = Outputb_temp;
+		break;
+	case MotorC:
+		top_1 = C1top;
+		top_2 = C2top;
+		top_3 = C3top;
+		bot_1 = C1bot;
+		bot_2 = C2bot;
+		bot_3 = C3bot;
+		spd = Outputc_temp;
+		break;
+	}
+
+    // Turn everything off
+    analogWrite(top_1, 0);
+    analogWrite(top_2, 0);
+    analogWrite(top_3, 0);
+    digitalWrite(bot_1, LOW);
+    digitalWrite(bot_2, LOW);
+    digitalWrite(bot_3, LOW);
+}
+
 void motor_controls_cb(const geometry_msgs::Vector3& cmd_msg){
 
 	// publish command saying that we are adjusting
@@ -359,7 +400,7 @@ void setup(){
 	nh.initNode();
         nh.advertise(pub_state);
 	nh.subscribe(motor_sub);
-        nh.subscribe(pib_sub);
+        nh.subscribe(pid_sub);
 }
 
 void loop(){
@@ -369,6 +410,7 @@ void loop(){
 //  delay(1);
   
   // from the hall effect sensors (speed)  
+  //  the current speed is updated anytime the halls are read
   Inputa = curSpeedA;
   Inputb = curSpeedB;
   Inputc = curSpeedC;
@@ -385,14 +427,12 @@ void loop(){
 
 void A(){
         // Turn off motor output
+        stop_motor(MotorA);
   
         // Updating speed based off current hall reading
 	hallA1 = digitalRead(ha1);
 	hallA2 = digitalRead(ha2);
 	hallA3 = digitalRead(ha3);
-
-//        hallAchanged = true;
-
 	time = millis();
 	curSpeedA = 1/(3 * (time - timeoldA));
 	timeoldA = time;
@@ -404,11 +444,12 @@ void A(){
         delayMicroseconds(1);
          
         // commuting motor for motor velocity
-        commute(1, hallA1, hallA2, hallA3, 1);
+        commute(MotorA, hallA1, hallA2, hallA3, 1);
 }
 
 void B() {
         // Turn off motor output
+        stop_motor(MotorB);
   
         // Updating speed based off current hall readings
 	hallB1 = digitalRead(hb1);
@@ -424,11 +465,12 @@ void B() {
         delayMicroseconds(1);
          
         // commuting motor for motor velocity
-        commute(2, hallB1, hallB2, hallB3, 1);
+        commute(MotorB, hallB1, hallB2, hallB3, 1);
 }
 
 void C() {
         // Turn off motor output
+        stop_motor(MotorC);
         
         // Updating speed based off current hall reading
 	hallC1 = digitalRead(hc1);
@@ -444,6 +486,6 @@ void C() {
         delayMicroseconds(1);	
 
         // commuting motor for motor velocity
-	commute(3, hallC1, hallC2, hallC3, 1);
+	commute(MotorC, hallC1, hallC2, hallC3, 1);
 }
 
