@@ -108,10 +108,6 @@ class User_ROI_Selection:
         # close all open windows
         cv2.destroyAllWindows()
         self.interacting = False
-        
-     
-    def main(self):
-        pass
     
 if __name__ == "__main__":
     img = cv2.img = cv2.imread("images/saved.jpg", 1)

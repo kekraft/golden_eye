@@ -1,0 +1,2 @@
+camera_umd/camera_umd:camera_umd/jpeg_streamer:camera_umd/uvc_camera:pong_launcher:pong_loader:pong_vision
+-DCATKIN_DEVEL_PREFIX=/home/gloin/AppliedRob/golden_eye_ws/devel -DCMAKE_INSTALL_PREFIX=/home/gloin/AppliedRob/golden_eye_ws/install -G Unix Makefiles

@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "pong_launcher")
+set(pong_launcher_MAINTAINER "gloin <gloin@todo.todo>")
+set(pong_launcher_DEPRECATED "")
+set(pong_launcher_VERSION "0.0.0")
+set(pong_launcher_BUILD_DEPENDS "roscpp" "rospy" "std_msgs")
+set(pong_launcher_RUN_DEPENDS "roscpp" "rospy" "std_msgs")
+set(pong_launcher_BUILDTOOL_DEPENDS "catkin")

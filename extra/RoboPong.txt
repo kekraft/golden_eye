@@ -1,0 +1,35 @@
+Competition Structure
+ 3 seeding matches and final project evaluation will be held near the end of Dead Week.  The results of these initial matches will be used to make a balanced bracket for the final tournament held during Finals Week.  Traditionally over 50% of the teams have their projects fully functional by Dead Week, but the Dead Week evaluations give the struggling teams insight into how to prioritize their efforts to maximize their grade improvement.
+
+Scoring of seeds competition
+ Each match will be scored as a win or loss and also a cup differential.  The seeds for the final tournament will be decided first by the number of wins and then ties broken by the total cup differential.  Ties after total cup differential will be broken by coin toss.
+
+Equipment
+ 8’ x 2’ x 27.5” Table
+ 36 Ping Pong Balls
+ 12 Red Solo Cups, 16 Ounces in size
+ 48 Ounces of water
+ 
+Cup Setup
+ The cups will be set up 3-2-1 from the back to front.  The pyramid base will be aligned with the end of the table, and centered right to left.  The pyramid will be reformed when there are 3 cups and 1 cup remaining.  
+
+Starting the Game
+ Possession or side is chosen by the winner of a coin toss during the seeding matches.  The loser of the coin toss decides the option not selected by the coin toss winner.  Possession and side are chosen by the higher ranked team during the final tournament.
+
+Playing the Game
+ The robot will have 15 seconds to assess game state and finish the throw. A throw that lands inside a cup will cause that cup to be removed.  A bounce throw that lands inside a cup will cause that cup and a bonus cup chosen by the throwing team to be removed.  Bounce shots may be swatted by the defending team.  Swatting or interfering with a ball that has not hit the table or cup will incur a 1 cup penalty. Contacting a cup while trying to swat will incur a 2 cup penalty.  The team with no remaining cups loses the match.
+
+Heating Up:
+ If a throwing team makes 3 shots in a row (bounce or non-bounce), they may throw until they miss.
+
+Redemption Shots:
+ When a team loses their last cup, they may shoot until they miss.  If they miss before sinking the last cup of their opponent, they lose.  If they hit all of their shots, the game goes to overtime.  Overtime is a 3 cup match that uses the same rules as a regular match, with the dominant team from the prior match starting with possession and side choice.
+
+Robot Restrictions:
+ Size:  The robot must fit within the space normally taken by a human.  77" from the floor, 24" wide, and 24" long.  The swatting mechanism must use an object that is roughly humanoid arm and hand in size.
+ Setup Time:  The robot must be able to be setup at a new table within 10 minutes and start playing a match.  
+ 
+Controlling the Robot:
+ Robots may be controlled from a remote control area that is visually seperated from the playing tables. Robot controllers may use a commercially available video stream to get information about the game state and issue commands to the robot.  Note that the video stream will have a significant delay and there will be a delay in the transmission of commands to the robot.  This will not be a viable option to detect quick operations, such as swatting.  Remote control will allow for shot selection, compensation for wind, and other high level decisions.
+ 
+ 

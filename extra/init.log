@@ -1,0 +1,348 @@
+
+
+
+
+#############################################
+Running file
+Tue Apr 21 09:12:25 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Tue Apr 21 09:13:25 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Tue Apr 21 09:16:40 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Tue Apr 21 09:17:42 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Thu Apr 30 08:39:23 PDT 2015
+#############################################
+
+Logs:
+... logging to /home/gloin/.ros/log/13d4cba4-ef4f-11e4-9760-f1e01f5b7fcf/roslaunch-gloin-1845.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch
+[1mstarted roslaunch server http://gloin:52058/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: indigo
+ * /rosversion: 1.11.10
+
+NODES
+  /
+    camera_node (uvc_camera/uvc_camera_node)
+    cup_detector (pong_vision/updated_cup_detection.py)
+
+auto-starting new master
+[1mprocess[master]: started with pid [1923][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch http://localhost:11311
+[1msetting /run_id to 13d4cba4-ef4f-11e4-9760-f1e01f5b7fcf[0m
+[1mprocess[rosout-1]: started with pid [1940][0m
+started core service [/rosout]
+[1mprocess[camera_node-2]: started with pid [1951][0m
+[1mprocess[cup_detector-3]: started with pid [1967][0m
+[cup_detector-3] killing on exit
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+
+
+
+
+#############################################
+Running file
+Thu Apr 30 09:23:40 PDT 2015
+#############################################
+
+Logs:
+... logging to /home/gloin/.ros/log/43cec444-ef55-11e4-a95d-85e3af6083a7/roslaunch-gloin-1916.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch
+[1mstarted roslaunch server http://gloin:35373/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: indigo
+ * /rosversion: 1.11.10
+
+NODES
+  /
+    camera_node (uvc_camera/uvc_camera_node)
+    cup_detector (pong_vision/updated_cup_detection.py)
+
+auto-starting new master
+[1mprocess[master]: started with pid [1979][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch http://localhost:11311
+[1msetting /run_id to 43cec444-ef55-11e4-a95d-85e3af6083a7[0m
+[1mprocess[rosout-1]: started with pid [1993][0m
+started core service [/rosout]
+[1mprocess[camera_node-2]: started with pid [2010][0m
+[1mprocess[cup_detector-3]: started with pid [2020][0m
+[cup_detector-3] killing on exit
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+
+
+
+
+#############################################
+Running file
+Tue May 5 12:17:06 PDT 2015
+#############################################
+
+Logs:
+... logging to /home/gloin/.ros/log/52063b82-f35b-11e4-a1b2-8370fd3dbd93/roslaunch-gloin-1886.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch
+[1mstarted roslaunch server http://gloin:39052/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: indigo
+ * /rosversion: 1.11.10
+
+NODES
+  /
+    camera_node (uvc_camera/uvc_camera_node)
+    cup_detector (pong_vision/updated_cup_detection.py)
+
+auto-starting new master
+[1mprocess[master]: started with pid [1947][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch http://localhost:11311
+[1msetting /run_id to 52063b82-f35b-11e4-a1b2-8370fd3dbd93[0m
+[1mprocess[rosout-1]: started with pid [1971][0m
+started core service [/rosout]
+[1mprocess[camera_node-2]: started with pid [1988][0m
+[1mprocess[cup_detector-3]: started with pid [1998][0m
+[cup_detector-3] killing on exit
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+
+
+
+
+#############################################
+Running file
+Tue May 5 13:03:38 PDT 2015
+#############################################
+
+Logs:
+... logging to /home/gloin/.ros/log/d294e0e0-f361-11e4-aac7-51b2ff346e20/roslaunch-gloin-1887.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch
+[1mstarted roslaunch server http://gloin:33116/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: indigo
+ * /rosversion: 1.11.10
+
+NODES
+  /
+    camera_node (uvc_camera/uvc_camera_node)
+    cup_detector (pong_vision/updated_cup_detection.py)
+
+auto-starting new master
+[1mprocess[master]: started with pid [1956][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch http://localhost:11311
+[1msetting /run_id to d294e0e0-f361-11e4-aac7-51b2ff346e20[0m
+[1mprocess[rosout-1]: started with pid [1977][0m
+started core service [/rosout]
+[1mprocess[camera_node-2]: started with pid [1994][0m
+[1mprocess[cup_detector-3]: started with pid [2004][0m
+[cup_detector-3] killing on exit
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+
+
+
+
+#############################################
+Running file
+Tue May 5 16:12:52 PDT 2015
+#############################################
+
+Logs:
+... logging to /home/gloin/.ros/log/4213ab1c-f37c-11e4-8342-1d6e59ed9498/roslaunch-gloin-1882.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch
+[1mstarted roslaunch server http://gloin:44822/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: indigo
+ * /rosversion: 1.11.10
+
+NODES
+  /
+    camera_node (uvc_camera/uvc_camera_node)
+    cup_detector (pong_vision/updated_cup_detection.py)
+
+auto-starting new master
+[1mprocess[master]: started with pid [1943][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch http://localhost:11311
+[1msetting /run_id to 4213ab1c-f37c-11e4-8342-1d6e59ed9498[0m
+[1mprocess[rosout-1]: started with pid [1965][0m
+started core service [/rosout]
+[1mprocess[camera_node-2]: started with pid [1982][0m
+[1mprocess[cup_detector-3]: started with pid [1992][0m
+[cup_detector-3] killing on exit
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+
+
+
+
+#############################################
+Running file
+Wed May 6 18:10:50 PDT 2015
+#############################################
+
+Logs:
+... logging to /home/gloin/.ros/log/e70f8b8e-f455-11e4-a89a-d11a555ed764/roslaunch-gloin-1900.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch
+[1mstarted roslaunch server http://gloin:59398/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: indigo
+ * /rosversion: 1.11.10
+
+NODES
+  /
+    camera_node (uvc_camera/uvc_camera_node)
+    cup_detector (pong_vision/updated_cup_detection.py)
+
+auto-starting new master
+[1mprocess[master]: started with pid [1968][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch http://localhost:11311
+[1msetting /run_id to e70f8b8e-f455-11e4-a89a-d11a555ed764[0m
+[1mprocess[rosout-1]: started with pid [1982][0m
+started core service [/rosout]
+[1mprocess[camera_node-2]: started with pid [1999][0m
+[1mprocess[cup_detector-3]: started with pid [2010][0m
+[cup_detector-3] killing on exit
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+
+
+
+
+#############################################
+Running file
+Thu May 7 08:08:56 PDT 2015
+#############################################
+
+Logs:
+... logging to /home/gloin/.ros/log/fbd414ac-f4ca-11e4-815c-cd6b35d33668/roslaunch-gloin-1880.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch
+[1mstarted roslaunch server http://gloin:50522/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: indigo
+ * /rosversion: 1.11.10
+
+NODES
+  /
+    camera_node (uvc_camera/uvc_camera_node)
+    cup_detector (pong_vision/updated_cup_detection.py)
+
+auto-starting new master
+[1mprocess[master]: started with pid [1950][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch http://localhost:11311
+[1msetting /run_id to fbd414ac-f4ca-11e4-815c-cd6b35d33668[0m
+[1mprocess[rosout-1]: started with pid [1969][0m
+started core service [/rosout]
+[1mprocess[camera_node-2]: started with pid [1992][0m
+[1mprocess[cup_detector-3]: started with pid [2002][0m
+[cup_detector-3] killing on exit
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m

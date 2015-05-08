@@ -91,7 +91,7 @@ int ha3 = A9;
 
 int hb1 = A10;
 int hb2 = A11;
-int hb3 = A12;
+int hb3 = A13;
 
 int hc1 = 29;
 int hc2 = 30;
@@ -445,8 +445,6 @@ void loop(){
   cPID.Compute();
   
 }
-
-
 
 void A(){
         // Turn off motor output

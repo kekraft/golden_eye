@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "pong_vision")
+set(pong_vision_MAINTAINER "gloin <gloin@todo.todo>")
+set(pong_vision_DEPRECATED "")
+set(pong_vision_VERSION "0.0.0")
+set(pong_vision_BUILD_DEPENDS "rospy" "std_msgs" "uvc_camera")
+set(pong_vision_RUN_DEPENDS "rospy" "std_msgs" "uvc_camera")
+set(pong_vision_BUILDTOOL_DEPENDS "catkin")

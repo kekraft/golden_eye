@@ -33,6 +33,7 @@ void setup(){
 	pinMode(int3, INPUT);
 	pinMode(int4, INPUT);
 
+	// probably don't need this here for ROS. just baud rate
 	Serial.begin(9600);
 
 	Setpointa = 0;
@@ -50,6 +51,9 @@ void setup(){
 }
 
 void loop(){
+
+	// probably don't need this when we use ROS
+	/******************************************/
 	if( Serial.available() >= 4 ) {
 		char motorSelect = Serial.read();
     
@@ -62,6 +66,7 @@ void loop(){
     	//Serial.write("Got ");Serial.println(val,DEC);
     	Serial.flush(); // get rid of excess
   	}
+  	/* ************************************ /
 
   	switch (motorSelect) {
   		case 'a':
