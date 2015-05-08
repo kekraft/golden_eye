@@ -1,8 +1,0 @@
-prefix=/home/gloin/AppliedRob/golden_eye_ws/install
-
-Name: pong_loader
-Description: Description of pong_loader
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/gloin/AppliedRob/golden_eye_ws/install/lib 
-Requires: 

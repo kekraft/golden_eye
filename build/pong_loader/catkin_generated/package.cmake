@@ -1,7 +1,0 @@
-set(_CATKIN_CURRENT_PACKAGE "pong_loader")
-set(pong_loader_MAINTAINER "gloin <gloin@todo.todo>")
-set(pong_loader_DEPRECATED "")
-set(pong_loader_VERSION "0.0.0")
-set(pong_loader_BUILD_DEPENDS "roscpp" "rospy" "std_msgs")
-set(pong_loader_RUN_DEPENDS "roscpp" "rospy" "std_msgs")
-set(pong_loader_BUILDTOOL_DEPENDS "catkin")
