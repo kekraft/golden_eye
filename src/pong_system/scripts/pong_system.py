@@ -10,6 +10,8 @@ import time
 from matplotlib import pyplot as plt
 import copy
 
+# IS THERE A WAY TO FORCE TARGETTING?
+# HOW DO WE STEP IN MANUALLY TO DO TARGETTING?
 
 
 from std_msgs.msg import String
@@ -22,6 +24,7 @@ class Pong_System:
 	def __init__(self):
 		self.state = Game_State.SETUP
 		self.targeted = False
+		self.manual = False
 
 		######## Do calibration routine here ###########
 		######## Do inital targetting ##################
@@ -50,6 +53,8 @@ class Pong_System:
 		self.launcher_pid_pub = rospy.Publisher('/launcher/pid_val', Vector3, queue_size=10)
 
 		# subscribe to game state
+		# a true message sent to this topic means we are on offense and should shoot
+		# a false message sent to this topic means we are on defense and should do targeting
 		self.game_offensive_sub = rospy.Subscriber('/game/offense', Bool, self.game_side_cb)
 
 
@@ -73,6 +78,7 @@ class Pong_System:
 
 		# transform pixel cup location to world location
 
+
 		# transform world location to motor velocity
 
 		self.targeted = True
@@ -85,13 +91,15 @@ class Pong_System:
 				 spin at the targeted cup
 		'''
 		if (msg.data is True) and (self.state is not Game_State.SETUP):
+			rospy.loginfo("On offense.")
 
 			if self.targeted is False:
-				# target the cups
+				# force to target the cups
 				pass
 
 			# motors' velocities should already be set to hit targeted cup
 			# load ball
+			rospy.loginfo("Sending load cmd")
 			cmd = Bool()
 			cmd.data = True
 			self.loader_pub.publish(cmd)
@@ -100,7 +108,12 @@ class Pong_System:
 
 		else:  
 
-			# command motors
+			# target and start motors
+			if not self.targeted:
+				# force targetting
+				pass
+
+			# command motors based on target
 			cmd = Vector3()
 			cmd.x = self.motor_a.vel
 			cmd.y = self.motor_b.vel
