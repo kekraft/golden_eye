@@ -132,7 +132,7 @@ PID cPID(&Inputc, &Outputc, &Setpointc, Kp, Kd, Ki, DIRECT);
 ros::NodeHandle  nh;
 
 std_msgs::String state_msg;
-ros::Publisher pub_state("launcher/state", &state_msg);
+ros::Publisher pub_state("/launcher/state", &state_msg);
 
 // Takes the current state from the interrupt service routine and 
 //  decides on the next commute state
@@ -348,7 +348,7 @@ void motor_controls_cb(const geometry_msgs::Vector3& cmd_msg){
 	pub_state.publish(&str);
 }
 
-ros::Subscriber<geometry_msgs::Vector3> motor_sub("launcher/motor_vel/", motor_controls_cb);
+ros::Subscriber<geometry_msgs::Vector3> motor_sub("/launcher/motor_vel", motor_controls_cb);
 
 void pid_controls_cb(const geometry_msgs::Vector3& pid_msg){
 
@@ -368,7 +368,7 @@ void pid_controls_cb(const geometry_msgs::Vector3& pid_msg){
 	pub_state.publish(&str);
 }
 
-ros::Subscriber<geometry_msgs::Vector3> pid_sub("launcher/pid_val/", pid_controls_cb);
+ros::Subscriber<geometry_msgs::Vector3> pid_sub("/launcher/pid_val", pid_controls_cb);
 
 void setup(){
 	//Pinmodes for the motor's PWM
