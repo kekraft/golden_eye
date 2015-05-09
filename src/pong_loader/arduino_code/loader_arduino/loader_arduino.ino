@@ -1,4 +1,4 @@
-loa/* 
+/* 
  * Purpose: Loads a ball into a hopper.
             Designed to run on a teensie 3.1.
             The pwm controlled motor does nothing until 
@@ -23,7 +23,7 @@ const int switch_pin = 2;
 const int led_pin = 13;
 const int motor_pin = 3;
 
-const int motor_speed = 100;
+const int motor_speed = 128;
 
 //bool last_reading;
 //long last_debounce_time=0;
@@ -168,6 +168,9 @@ void setup()
   //  turns the motor off when the switch pin
   //   goes from low to high
   attachInterrupt(0, stop_motor, RISING);
+  
+  // load a ball on start
+  run_motor(motor_speed);
  
 }
 

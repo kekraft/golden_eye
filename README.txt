@@ -30,3 +30,23 @@ roscore
 # make sure you specify the correct port
 rosrun rosserial_python serial_node.py _port:=/dev/ttyACM1
 # you should be good from there
+
+# to publish from the command line once its running...
+# for launcher pid
+rostopic pub /launcher/pid_val geometry_msgs/Vector3 -- 0.0 0.0 0.0
+
+# for loader
+rostopic pub /loader/load_cmd std_msgs/Bool -- True
+
+# loader switch wire coding
+from left to right (looking at the board from usb side to end)
+blue, white, green is disconnected 
+
+loader motor wire coding
+yellow = positive 
+black = negative
+
+power supply to loader coding
+black = negative
+green = positive
+
