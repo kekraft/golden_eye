@@ -1,4 +1,4 @@
-/* 
+loa/* 
  * Purpose: Loads a ball into a hopper.
             Designed to run on a teensie 3.1.
             The pwm controlled motor does nothing until 
@@ -17,7 +17,7 @@
 ros::NodeHandle nh;
 
 std_msgs::String state_msg;
-ros::Publisher pub_state("loader/state", &state_msg);
+ros::Publisher pub_state("/loader/state", &state_msg);
 
 const int switch_pin = 2;
 const int led_pin = 13;
@@ -146,7 +146,7 @@ void load_cmd_cb(const std_msgs::Bool& cmd_msg){
   
 }
 
-ros::Subscriber<std_msgs::Bool> load_sub("loader/load_cmd", load_cmd_cb);
+ros::Subscriber<std_msgs::Bool> load_sub("/loader/load_cmd", load_cmd_cb);
 
 void setup()
 {

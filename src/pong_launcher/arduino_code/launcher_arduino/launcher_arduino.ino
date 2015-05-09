@@ -332,7 +332,7 @@ void motor_controls_cb(const geometry_msgs::Vector3& cmd_msg){
 
 	// publish command saying that we are adjusting
 	std_msgs::String str;
-	str.data = "adjusting";
+	str.data = "Adjusting Motor Vals";
 	pub_state.publish(&str);
 
 	// Get motor speed A, B, and C from the message and set
@@ -344,7 +344,7 @@ void motor_controls_cb(const geometry_msgs::Vector3& cmd_msg){
 
 	// publish command alerting the master system that we are ready
 	//  std_msgs::String str;
-	str.data = "ready";
+	str.data = "Motor Vals Set";
 	pub_state.publish(&str);
 }
 
