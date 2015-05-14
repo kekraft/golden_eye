@@ -282,7 +282,7 @@ class System_GUI():
     self.game_state_text = tk.Text(self.root, height=1, width = 8)
     self.game_state_text.config(bg='gray77')
     self.game_state_text.config(fg='black')
-    self.game_state_text.pack()
+    self.game_state_text.pack(pady=30)
     self.game_state_text.insert(tk.END, " SETUP")
     self.game_state_text.config(state=tk.DISABLED)
 
@@ -321,41 +321,53 @@ class System_GUI():
     self.motor_c_velocity_box.pack(ipadx= 5, padx=10, pady=10, side=tk.LEFT)
 
     # PID value boxes
+    pid_section_frame = tk.Frame(self.root)
+    pid_section_frame.pack(pady= 20)
 
-    pid_text_frame = tk.Frame(self.root)
-    pid_text_frame.pack()
+    pid_text_frame = tk.Frame(pid_section_frame)
+    pid_text_frame.grid(row=0, column=0)
     # pid_text_frame.grid(row=0,column=0)
     # text boxes for pid
     kp_text = tk.Text(pid_text_frame, height=1, width=8)
-    kp_text.pack(side=tk.LEFT)
+    # kp_text.pack(side=tk.LEFT)
+    kp_text.grid(row=0, column=0)
     kp_text.insert(tk.END, "P: ")
     kp_text.config(state=tk.DISABLED)
     kp_text.configure(bg='gray77')
     
     ki_text = tk.Text(pid_text_frame, height=1, width=8)
-    ki_text.pack(side=tk.LEFT)
+    # ki_text.pack(side=tk.LEFT)
+    ki_text.grid(row=0, column=1)
     ki_text.insert(tk.END, "I: ")
     ki_text.config(state=tk.DISABLED)
     ki_text.configure(bg='gray77')
 
     kd_text = tk.Text(pid_text_frame, height=1, width=8)
-    kd_text.pack(side=tk.LEFT)
+    # kd_text.pack(side=tk.LEFT)
+    kd_text.grid(row=0, column=2)
     kd_text.insert(tk.END, "D: ")
     kd_text.config(state=tk.DISABLED)
     kd_text.configure(bg='gray77')
 
 
     # frame for pid buttons
-    pid_button_frame = tk.Frame(self.root)
-    pid_button_frame.pack()
+    pid_button_frame = tk.Frame(pid_section_frame)
+    # pid_button_frame.pack()
+    pid_button_frame.grid(row=1, column=0)
     self.ki_box = tk.Spinbox(pid_button_frame, from_=0, to=10, increment=.1)
-    self.ki_box.pack(side=tk.LEFT)
+    # self.ki_box.pack(side=tk.LEFT)
+    self.ki_box.grid(row=0, column=0)
+    self.ki_box.configure(width=5)
 
     self.kp_box = tk.Spinbox(pid_button_frame, from_=0, to=10, increment=.1)
-    self.kp_box.pack(side=tk.LEFT)
+    # self.kp_box.pack(side=tk.LEFT)
+    self.kp_box.grid(row=0, column=1)
+    self.kp_box.configure(width=5)
 
     self.kd_box = tk.Spinbox(pid_button_frame, from_=0, to=10, increment=.1)
-    self.kd_box.pack(side=tk.LEFT)
+    # self.kd_box.pack(side=tk.LEFT)
+    self.kd_box.grid(row=0, column=2)
+    self.kd_box.configure(width=5)
 
 
 
@@ -369,22 +381,36 @@ class System_GUI():
 
     # insert buttons into panel
     # 4 buttons: Fire, update motors, update pid, and Quit
-    self.fire_button = tk.Button(self.root, text="Fire")
-    self.update_motor_speed_button = tk.Button(self.root, text="Update Motor Values")
-    self.update_pid_button = tk.Button(self.root, text="Update PID")
-    self.quit_button = tk.Button(self.root, text="Quit")
+    main_button_panel = tk.Frame(self.root)
+    main_button_panel.pack(pady = 20)
 
-    self.fire_button.pack(fill=tk.X)
-    self.update_motor_speed_button.pack()
-    self.update_pid_button.pack()
-    self.quit_button.pack(fill=tk.X)
+    self.fire_button = tk.Button(main_button_panel, text="Fire", width = 20)
+    self.update_motor_speed_button = tk.Button(main_button_panel, text="Update Motor Values", width = 20)
+    self.update_pid_button = tk.Button(main_button_panel, text="Update PID", width = 20)
+    self.quit_button = tk.Button(main_button_panel, text="Quit", width = 20)
+
+    # self.fire_button.pack(fill=tk.X, side=tk.TOP)
+    # self.update_motor_speed_button.pack(fill=tk.X, side=tk.BOTTOM)
+    # self.update_pid_button.pack(fill=tk.X, side=tk.BOTTOM)
+    # self.quit_button.pack(fill=tk.X, side=tk.TOP)
+    self.fire_button.grid(row=1,column=1, padx =5, pady = 5)
+    self.update_motor_speed_button.grid(row=0,column=1, padx=5, pady = 5)
+    self.update_pid_button.grid(row=0,column=0, padx =5, pady = 5)
+    self.quit_button.grid(row=1, column=0, padx =5, pady = 5)
 
     self.fire_button.bind('<Button-1>', self.fire)
     self.update_motor_speed_button.bind('<Button-1>', self.update_motor_speed)
     self.update_pid_button.bind('<Button-1>', self.update_pid_values)
     self.quit_button.bind('<Button-1>', self.quit)
 
+    self.root.bind("<Return>", self.fire)
+    self.root.bind("p", self.update_img(None))
+
+    # # display updated picture occasionally
+    self.root.after(100, self.update_img(None))
+
   def start_gui(self):
+
     # start the GUI
     self.root.mainloop()
 
@@ -421,14 +447,19 @@ class System_GUI():
   def mode_change(self):
     print 'Selection changed to: ', self.mode_val.get()
 
-  def update_img(self, open_cv_img):
+  def update_img(self, arg):
+    # get image from pong system class
+
     # convert image to be friendly with tkinter
     # rearrange color channel
-    b,g,r = cv2.split(img)
-    img = cv2.merge((r,g,b))
+    print 'update_img'
+    print arg
 
-    im = PilImage.fromarray(img)
-    imgtk = ImageTk.PhotoImage(image=im)
+    # b,g,r = cv2.split(img)
+    # img = cv2.merge((r,g,b))
+
+    # im = PilImage.fromarray(img)
+    # imgtk = ImageTk.PhotoImage(image=im)
 
 
 def main():
@@ -445,6 +476,9 @@ def main():
 
     start_system_gui(pong)
     
+    # not needed because Tkinter is already doing a loop called main loop
+    # could loop here endlessly and call it root.update 
+    # see http://stackoverflow.com/questions/459083/how-do-you-run-your-own-code-alongside-tkinters-event-loop
     # rospy.spin()
 
     
