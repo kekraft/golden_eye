@@ -4,7 +4,7 @@
   <node pkg="uvc_camera" type="uvc_camera_node" name="camera_node" />
 
   <!-- Start the actual vision script -->
-  <node pkg="pong_vision" type="updated_cup_detection.py" name="camera_node" />
+  <node pkg="pong_vision" type="updated_cup_detection.py" name="vision_node" />
 
   <!-- Start ROS serial with launcher -->
    <!-- !!!!!! Check port value !!!!!!! -->
