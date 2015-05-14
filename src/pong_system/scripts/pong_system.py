@@ -11,7 +11,10 @@ from matplotlib import pyplot as plt
 import copy
 import sys
 
-from Tkinter import *
+# from Tkinter import *
+import Tkinter as tk
+import Image as PilImage
+import ImageTk # Had to install sudo apt-get install python-imaging-tk
 
 # IS THERE A WAY TO FORCE TARGETTING?
 # HOW DO WE STEP IN MANUALLY TO DO TARGETTING?
@@ -166,9 +169,7 @@ class Game_State:
     DEFENSE = 2
 
 
-from Tkinter import *
-
-class Application(Frame):
+class Application(tk.Frame):
     on_offense = False
     selected = False
 
@@ -195,19 +196,19 @@ class Application(Frame):
         # self.QUIT["command"] = self.quit
         # self.QUIT.pack({"side": "left"})
 
-        self.offense = Button(self)
+        self.offense = tk.Button(self)
         self.offense["text"] = "Offense",
         self.offense["command"] = self.set_offense
         self.offense.pack({"side": "left"})
 
-        self.defense = Button(self)
+        self.defense = tk.Button(self)
         self.defense["text"] = "Defense"
         self.defense["command"] = self.set_defense
 
         self.defense.pack({"side": "left"})
 
     def __init__(self, master=None):
-        Frame.__init__(self, master)
+        tk.Frame.__init__(self, master)
         master.minsize(width=250, height=250)
         self.pack()
         self.createWidgets()
@@ -226,7 +227,7 @@ class Select_Side():
         print "On Offense = ", self.on_offense
         
     def create_window(self):
-        self.root = Tk()
+        self.root = tk.Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.root.app = Application(master=self.root)
         self.root.app.mainloop()
@@ -237,6 +238,100 @@ class Select_Side():
         self.on_offense = self.root.app.on_offense
         self.root.destroy()
 
+#import sift
+class System_GUI():
+  def __init__(self, img):
+    self.root = tk.Tk()
+    # tl = Tkinter.Toplevel(root)    
+
+    # cv2.namedWindow("Display Window", cv2.WINDOW_AUTOSIZE)
+    # cv2.imshow("Display Window", img)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    im = PilImage.fromarray(img)
+    self.imgtk = ImageTk.PhotoImage(image=im)
+
+    # insert image into panel
+    self.panel = tk.Label(self.root, image = self.imgtk)
+    self.panel.pack(side = "top", fill = "both", expand = "yes")
+
+    # Game State Text....need method for updating this to offense and defense
+    self.game_state_text = tk.Text(self.root, height=1, width = 8)
+    self.game_state_text.config(bg='gray77')
+    self.game_state_text.config(fg='black')
+    self.game_state_text.pack()
+    self.game_state_text.insert(tk.END, " SETUP")
+    self.game_state_text.config(state=tk.DISABLED)
+
+    # motor spin boxes
+    motor_a_text = tk.Text(self.root, height=1, width=8)
+    motor_a_text.pack()
+    motor_a_text.insert(tk.END, "Motor A:")
+    motor_a_text.config(state=tk.DISABLED)
+    motor_a_text.configure(bg='gray77')
+    self.motor_a_velocity_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
+    self.motor_a_velocity_box.pack()
+
+    motor_b_text = tk.Text(self.root, height=1, width=8)
+    motor_b_text.pack()
+    motor_b_text.insert(tk.END, "Motor B:")
+    motor_b_text.config(state=tk.DISABLED)
+    motor_b_text.configure(bg='gray77')
+    self.motor_b_velocity_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
+    self.motor_b_velocity_box.pack()
+
+    motor_c_text = tk.Text(self.root, height=1, width=8)
+    motor_c_text.pack()
+    motor_c_text.insert(tk.END, "Motor C:")
+    motor_c_text.config(state=tk.DISABLED)
+    motor_c_text.configure(bg='gray77')
+    self.motor_c_velocity_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
+    self.motor_c_velocity_box.pack()
+
+    # What mode are we in, automatic or manual
+    self.mode_val = tk.IntVar()
+    self.manual_button = tk.Radiobutton(self.root, text="Manual", variable=self.mode_val, value=1, command=self.mode_change)
+    self.manual_button.pack()
+    self.automatic_button = tk.Radiobutton(self.root, text="Automatic", variable=self.mode_val, value=2, command=self.mode_change)
+    self.automatic_button.pack()
+
+    # insert buttons into panel
+    # 2 buttons: Fire and Quit
+    self.fire_button = tk.Button(self.root, text="Fire")
+    self.quit_button = tk.Button(self.root, text="Quit")
+
+    self.fire_button.pack()
+    self.quit_button.pack()
+
+    self.fire_button.bind('<Button-1>', self.fire)
+    self.quit_button.bind('<Button-1>', self.quit)
+
+  def start_gui(self):
+    # start the GUI
+    self.root.mainloop()
+
+  def fire(self, arg):
+    ''' To really tie this in, we need to be able to publish the motor commands'''
+    print 'Fire'
+    motor_a_speed = float(self.motor_a_velocity_box.get())
+    print 'Motor a Speed', motor_a_speed
+
+
+  def quit(self, arg):
+    print 'Quit'
+
+  def mode_change(self):
+    print 'Selection changed to: ', self.mode_val.get()
+
+  def update_img(self, open_cv_img):
+    # convert image to be friendly with tkinter
+    # rearrange color channel
+    b,g,r = cv2.split(img)
+    img = cv2.merge((r,g,b))
+
+    im = PilImage.fromarray(img)
+    imgtk = ImageTk.PhotoImage(image=im)
 
 
 def main():
@@ -250,8 +345,22 @@ def main():
     rospy.init_node('pong_system')
 
     pong = Pong_System(on_offense)
+
+    start_system_gui()
     
-    rospy.spin()
+    # rospy.spin()
+
+    
+    
+
+def start_system_gui():
+    img = cv2.imread("saved.jpg", 1)
+    b,g,r = cv2.split(img)
+    img = cv2.merge((r,g,b))
+    
+    gui = System_GUI(img)
+    gui.start_gui()
+
 
 if __name__ == '__main__':
     
