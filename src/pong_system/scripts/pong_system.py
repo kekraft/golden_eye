@@ -114,10 +114,7 @@ class Pong_System:
 
             # motors' velocities should already be set to hit targeted cup
             # load ball
-            rospy.loginfo("Sending load cmd")
-            cmd = Bool()
-            cmd.data = True
-            self.loader_pub.publish(cmd)
+            self.load()
 
             self.targeted = False
 
@@ -146,6 +143,27 @@ class Pong_System:
 
         print "are we on offense or defense?"
 
+    def load(self):
+        rospy.loginfo("Sending load cmd")
+        cmd = Bool()
+        cmd.data = True
+        self.loader_pub.publish(cmd)
+
+    def update_motor_speed(self, motor_a_speed, motor_b_speed, motor_c_speed):
+        rospy.loginfo("Updating motor speeds")
+        cmd = Vector3()
+        cmd.x = motor_a_speed
+        cmd.y = motor_b_speed
+        cmd.z = motor_c_speed
+        self.launcher_motor_vel_pub.publish(cmd)
+
+    def update_pid_values(self, kp, ki, kd):
+        rospy.loginfo("Updating PID values")
+        cmd = Vector3()
+        cmd.x = kp
+        cmd.y = ki
+        cmd.z = kd
+        self.self.launcher_pid_pub(cmd)
 
 
 
@@ -240,7 +258,7 @@ class Select_Side():
 
 #import sift
 class System_GUI():
-  def __init__(self, img):
+  def __init__(self, img, pong_system):
     self.root = tk.Tk()
     # tl = Tkinter.Toplevel(root)    
 
@@ -248,6 +266,7 @@ class System_GUI():
     # cv2.imshow("Display Window", img)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
+    self.pong_system = pong_system
 
     im = PilImage.fromarray(img)
     self.imgtk = ImageTk.PhotoImage(image=im)
@@ -317,6 +336,8 @@ class System_GUI():
     motor_a_speed = float(self.motor_a_velocity_box.get())
     print 'Motor a Speed', motor_a_speed
 
+    self.pong_system.load()
+
 
   def quit(self, arg):
     print 'Quit'
@@ -346,19 +367,19 @@ def main():
 
     pong = Pong_System(on_offense)
 
-    start_system_gui()
+    start_system_gui(pong)
     
     # rospy.spin()
 
     
     
 
-def start_system_gui():
+def start_system_gui(pong_system):
     img = cv2.imread("saved.jpg", 1)
     b,g,r = cv2.split(img)
     img = cv2.merge((r,g,b))
     
-    gui = System_GUI(img)
+    gui = System_GUI(img, pong_system)
     gui.start_gui()
 
 
