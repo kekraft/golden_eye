@@ -150,7 +150,9 @@ class Pong_System:
         self.loader_pub.publish(cmd)
 
     def update_motor_speed(self, motor_a_speed, motor_b_speed, motor_c_speed):
-        rospy.loginfo("Updating motor speeds")
+        # rospy.loginfo("Updating motor speeds")
+        msg = 'Updating Motor Speed values to {0}, {1}, {2}.'.format(motor_a_speed, motor_b_speed, motor_c_speed)
+        rospy.loginfo(msg)
         cmd = Vector3()
         cmd.x = motor_a_speed
         cmd.y = motor_b_speed
@@ -158,12 +160,13 @@ class Pong_System:
         self.launcher_motor_vel_pub.publish(cmd)
 
     def update_pid_values(self, kp, ki, kd):
-        rospy.loginfo("Updating PID values")
+        msg = 'Updating PID values to {0}, {1}, {2}.'.format(kp, ki, kd)
+        rospy.loginfo(msg)
         cmd = Vector3()
         cmd.x = kp
         cmd.y = ki
         cmd.z = kd
-        self.self.launcher_pid_pub(cmd)
+        self.launcher_pid_pub.publish(cmd)
 
 
 
@@ -308,6 +311,32 @@ class System_GUI():
     self.motor_c_velocity_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
     self.motor_c_velocity_box.pack()
 
+    # PID value boxes
+    kp_text = tk.Text(self.root, height=1, width=8)
+    kp_text.pack()
+    kp_text.insert(tk.END, "P: ")
+    kp_text.config(state=tk.DISABLED)
+    kp_text.configure(bg='gray77')
+    self.kp_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
+    self.kp_box.pack()
+
+    ki_text = tk.Text(self.root, height=1, width=8)
+    ki_text.pack()
+    ki_text.insert(tk.END, "I: ")
+    ki_text.config(state=tk.DISABLED)
+    ki_text.configure(bg='gray77')
+    self.ki_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
+    self.ki_box.pack()
+
+    kd_text = tk.Text(self.root, height=1, width=8)
+    kd_text.pack()
+    kd_text.insert(tk.END, "D: ")
+    kd_text.config(state=tk.DISABLED)
+    kd_text.configure(bg='gray77')
+    self.kd_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
+    self.kd_box.pack()
+
+
     # What mode are we in, automatic or manual
     self.mode_val = tk.IntVar()
     self.manual_button = tk.Radiobutton(self.root, text="Manual", variable=self.mode_val, value=1, command=self.mode_change)
@@ -318,12 +347,15 @@ class System_GUI():
     # insert buttons into panel
     # 2 buttons: Fire and Quit
     self.fire_button = tk.Button(self.root, text="Fire")
+    self.update_pid_button = tk.Button(self.root, text="Update PID")
     self.quit_button = tk.Button(self.root, text="Quit")
 
     self.fire_button.pack()
+    self.update_pid_button.pack()
     self.quit_button.pack()
 
     self.fire_button.bind('<Button-1>', self.fire)
+    self.update_pid_button.bind('<Button-1>', self.update_pid_values)
     self.quit_button.bind('<Button-1>', self.quit)
 
   def start_gui(self):
@@ -333,10 +365,20 @@ class System_GUI():
   def fire(self, arg):
     ''' To really tie this in, we need to be able to publish the motor commands'''
     print 'Fire'
-    motor_a_speed = float(self.motor_a_velocity_box.get())
-    print 'Motor a Speed', motor_a_speed
+    # motor_a_speed = float(self.motor_a_velocity_box.get())
+    # print 'Motor a Speed', motor_a_speed
 
     self.pong_system.load()
+
+  def update_pid_values(self, arg):
+    # get values from spin boxes
+    kp = float(self.kp_box.get())
+    ki = float(self.ki_box.get())
+    kd = float(self.kd_box.get())
+
+    # send ros command to controller
+    self.pong_system.update_pid_values(kp, ki, kd)
+
 
 
   def quit(self, arg):
