@@ -286,55 +286,78 @@ class System_GUI():
     self.game_state_text.insert(tk.END, " SETUP")
     self.game_state_text.config(state=tk.DISABLED)
 
-    # motor spin boxes
-    motor_a_text = tk.Text(self.root, height=1, width=8)
-    motor_a_text.pack()
+    # motor spin boxes section
+    motor_text_frame = tk.Frame(self.root)
+    motor_text_frame.pack()
+
+    motor_a_text = tk.Text(motor_text_frame, height=1, width=8)
+    motor_a_text.pack(side=tk.LEFT, ipadx=20, padx = 10)
     motor_a_text.insert(tk.END, "Motor A:")
     motor_a_text.config(state=tk.DISABLED)
     motor_a_text.configure(bg='gray77')
-    self.motor_a_velocity_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
-    self.motor_a_velocity_box.pack()
 
-    motor_b_text = tk.Text(self.root, height=1, width=8)
-    motor_b_text.pack()
+    motor_b_text = tk.Text(motor_text_frame, height=1, width=8)
+    motor_b_text.pack(side=tk.LEFT, ipadx=20, padx=100)
     motor_b_text.insert(tk.END, "Motor B:")
     motor_b_text.config(state=tk.DISABLED)
     motor_b_text.configure(bg='gray77')
-    self.motor_b_velocity_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
-    self.motor_b_velocity_box.pack()
 
-    motor_c_text = tk.Text(self.root, height=1, width=8)
-    motor_c_text.pack()
+    motor_c_text = tk.Text(motor_text_frame, height=1, width=8)
+    motor_c_text.pack(side=tk.LEFT, ipadx=20, padx = 10)
     motor_c_text.insert(tk.END, "Motor C:")
     motor_c_text.config(state=tk.DISABLED)
     motor_c_text.configure(bg='gray77')
-    self.motor_c_velocity_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
-    self.motor_c_velocity_box.pack()
+
+    motor_box_frame = tk.Frame(self.root)
+    motor_box_frame.pack()
+
+    self.motor_a_velocity_box = tk.Spinbox(motor_box_frame, from_=128, to=255, increment=1)
+    self.motor_a_velocity_box.pack(ipadx=5, padx=10, pady=10, side=tk.LEFT)
+
+    self.motor_b_velocity_box = tk.Spinbox(motor_box_frame, from_=128, to=255, increment=1)
+    self.motor_b_velocity_box.pack(ipadx=5, padx=10, pady=10, side=tk.LEFT)    
+
+    self.motor_c_velocity_box = tk.Spinbox(motor_box_frame, from_=128, to=255, increment=1)
+    self.motor_c_velocity_box.pack(ipadx= 5, padx=10, pady=10, side=tk.LEFT)
 
     # PID value boxes
-    kp_text = tk.Text(self.root, height=1, width=8)
-    kp_text.pack()
+
+    pid_text_frame = tk.Frame(self.root)
+    pid_text_frame.pack()
+    # pid_text_frame.grid(row=0,column=0)
+    # text boxes for pid
+    kp_text = tk.Text(pid_text_frame, height=1, width=8)
+    kp_text.pack(side=tk.LEFT)
     kp_text.insert(tk.END, "P: ")
     kp_text.config(state=tk.DISABLED)
     kp_text.configure(bg='gray77')
-    self.kp_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
-    self.kp_box.pack()
-
-    ki_text = tk.Text(self.root, height=1, width=8)
-    ki_text.pack()
+    
+    ki_text = tk.Text(pid_text_frame, height=1, width=8)
+    ki_text.pack(side=tk.LEFT)
     ki_text.insert(tk.END, "I: ")
     ki_text.config(state=tk.DISABLED)
     ki_text.configure(bg='gray77')
-    self.ki_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
-    self.ki_box.pack()
 
-    kd_text = tk.Text(self.root, height=1, width=8)
-    kd_text.pack()
+    kd_text = tk.Text(pid_text_frame, height=1, width=8)
+    kd_text.pack(side=tk.LEFT)
     kd_text.insert(tk.END, "D: ")
     kd_text.config(state=tk.DISABLED)
     kd_text.configure(bg='gray77')
-    self.kd_box = tk.Spinbox(self.root, from_=0, to=10, increment=.1)
-    self.kd_box.pack()
+
+
+    # frame for pid buttons
+    pid_button_frame = tk.Frame(self.root)
+    pid_button_frame.pack()
+    self.ki_box = tk.Spinbox(pid_button_frame, from_=0, to=10, increment=.1)
+    self.ki_box.pack(side=tk.LEFT)
+
+    self.kp_box = tk.Spinbox(pid_button_frame, from_=0, to=10, increment=.1)
+    self.kp_box.pack(side=tk.LEFT)
+
+    self.kd_box = tk.Spinbox(pid_button_frame, from_=0, to=10, increment=.1)
+    self.kd_box.pack(side=tk.LEFT)
+
+
 
 
     # What mode are we in, automatic or manual
@@ -345,16 +368,19 @@ class System_GUI():
     self.automatic_button.pack()
 
     # insert buttons into panel
-    # 2 buttons: Fire and Quit
+    # 4 buttons: Fire, update motors, update pid, and Quit
     self.fire_button = tk.Button(self.root, text="Fire")
+    self.update_motor_speed_button = tk.Button(self.root, text="Update Motor Values")
     self.update_pid_button = tk.Button(self.root, text="Update PID")
     self.quit_button = tk.Button(self.root, text="Quit")
 
-    self.fire_button.pack()
+    self.fire_button.pack(fill=tk.X)
+    self.update_motor_speed_button.pack()
     self.update_pid_button.pack()
-    self.quit_button.pack()
+    self.quit_button.pack(fill=tk.X)
 
     self.fire_button.bind('<Button-1>', self.fire)
+    self.update_motor_speed_button.bind('<Button-1>', self.update_motor_speed)
     self.update_pid_button.bind('<Button-1>', self.update_pid_values)
     self.quit_button.bind('<Button-1>', self.quit)
 
@@ -379,6 +405,14 @@ class System_GUI():
     # send ros command to controller
     self.pong_system.update_pid_values(kp, ki, kd)
 
+  def update_motor_speed(self, arg):
+    # get values from spin boxes
+    motor_a_speed = float(self.motor_a_velocity_box.get())
+    motor_b_speed = float(self.motor_b_velocity_box.get())
+    motor_c_speed = float(self.motor_c_velocity_box.get())
+
+    # Send ros command to controller
+    self.pong_system.update_motor_speed(motor_a_speed, motor_b_speed, motor_c_speed)
 
 
   def quit(self, arg):
