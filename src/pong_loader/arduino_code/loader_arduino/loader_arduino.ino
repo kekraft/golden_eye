@@ -23,7 +23,7 @@ const int switch_pin = 2;
 const int led_pin = 13;
 const int motor_pin = 3;
 
-const int motor_speed = 128;
+const int motor_speed = 127;
 
 //bool last_reading;
 //long last_debounce_time=0;
@@ -94,7 +94,7 @@ void setPwmFrequency(int pin, int divisor) {
 }
 
 
-void run_motor(int motor_speed){
+void run_motor(){
   analogWrite(motor_pin, motor_speed);
 }
 
@@ -132,7 +132,7 @@ void load_cmd_cb(const std_msgs::Bool& cmd_msg){
     pub_state.publish(&state_msg);
     digitalWrite(led_pin, HIGH);
     
-    run_motor(motor_speed);
+    run_motor();
 //    load_ball();
     
 //    delay(100);
@@ -170,8 +170,7 @@ void setup()
   attachInterrupt(0, stop_motor, RISING);
   
   // load a ball on start
-  run_motor(motor_speed);
- 
+  run_motor();
 }
 
 void loop()
