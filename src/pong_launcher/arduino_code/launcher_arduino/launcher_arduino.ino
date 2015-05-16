@@ -420,6 +420,8 @@ void setup(){
 	bPID.SetMode(AUTOMATIC);
 	cPID.SetMode(AUTOMATIC);
 
+	nh.getHardware()->setBaud(57600);
+
 	nh.initNode();
         nh.advertise(pub_state);
 	nh.subscribe(motor_sub);
