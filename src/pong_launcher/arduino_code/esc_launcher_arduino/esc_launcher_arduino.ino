@@ -208,7 +208,7 @@ void setup(){
 	cPID.SetMode(AUTOMATIC);
 
         // Init ros stuff
-        nh.getHardware()->setBaud(57600);
+        nh.getHardware()->setBaud(9600);
 	nh.initNode();
         nh.advertise(pub_state);
 	nh.subscribe(motor_sub);

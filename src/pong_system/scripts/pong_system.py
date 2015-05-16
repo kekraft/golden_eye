@@ -333,37 +333,88 @@ class System_GUI():
 
     # motor spin boxes section
     motor_text_frame = tk.Frame(self.root)
-    motor_text_frame.pack()
+    motor_text_frame.pack(pady=10)
 
-    motor_a_text = tk.Text(motor_text_frame, height=1, width=8)
-    motor_a_text.pack(side=tk.LEFT, ipadx=20, padx = 10)
-    motor_a_text.insert(tk.END, "Motor A:")
+    motor_a_text = tk.Text(motor_text_frame, height=1, width=22)
+    # motor_a_text.pack(side=tk.LEFT, ipadx=20, padx = 10)
+    motor_a_text.grid(row=0, column=0)
+    motor_a_text.insert(tk.END, "Motor A")
     motor_a_text.config(state=tk.DISABLED)
     motor_a_text.configure(bg='gray77')
+    # motor_a_text.configure(justify = tk.CENTER)
 
-    motor_b_text = tk.Text(motor_text_frame, height=1, width=8)
-    motor_b_text.pack(side=tk.LEFT, ipadx=20, padx=100)
-    motor_b_text.insert(tk.END, "Motor B:")
+    motor_b_text = tk.Text(motor_text_frame, height=1, width=22)
+    # motor_b_text.pack(side=tk.LEFT, ipadx=20, padx=100)
+    motor_b_text.grid(row=0, column=1)
+    motor_b_text.insert(tk.END, "Motor B")
     motor_b_text.config(state=tk.DISABLED)
     motor_b_text.configure(bg='gray77')
+    # motor_b_text.configure(justify = tk.CENTER)
 
-    motor_c_text = tk.Text(motor_text_frame, height=1, width=8)
-    motor_c_text.pack(side=tk.LEFT, ipadx=20, padx = 10)
-    motor_c_text.insert(tk.END, "Motor C:")
+    motor_c_text = tk.Text(motor_text_frame, height=1, width=22)
+    # motor_c_text.pack(side=tk.LEFT, ipadx=20, padx = 10)
+    motor_c_text.grid(row=0, column=2)
+    motor_c_text.insert(tk.END, "Motor C")
     motor_c_text.config(state=tk.DISABLED)
     motor_c_text.configure(bg='gray77')
+    # motor_c_text.configure(justify = tk.CENTER)
 
-    motor_box_frame = tk.Frame(self.root)
-    motor_box_frame.pack()
+    # motor_box_frame = tk.Frame(self.root)
+    # motor_box_frame.pack()
 
-    self.motor_a_velocity_box = tk.Spinbox(motor_box_frame, from_=128, to=255, increment=1)
-    self.motor_a_velocity_box.pack(ipadx=5, padx=10, pady=10, side=tk.LEFT)
+    self.motor_a_velocity_box = tk.Spinbox(motor_text_frame, from_=128, to=255, increment=1)
+    # self.motor_a_velocity_box.pack(ipadx=5, padx=10, pady=10, side=tk.LEFT)
+    self.motor_a_velocity_box.grid(row=1, column=0)
+    self.motor_a_velocity_box.configure(width=18)
 
-    self.motor_b_velocity_box = tk.Spinbox(motor_box_frame, from_=128, to=255, increment=1)
-    self.motor_b_velocity_box.pack(ipadx=5, padx=10, pady=10, side=tk.LEFT)    
+    self.motor_b_velocity_box = tk.Spinbox(motor_text_frame, from_=128, to=255, increment=1)
+    # self.motor_b_velocity_box.pack(ipadx=5, padx=10, pady=10, side=tk.LEFT)    
+    self.motor_b_velocity_box.grid(row=1, column=1)
+    self.motor_b_velocity_box.configure(width=18)
 
-    self.motor_c_velocity_box = tk.Spinbox(motor_box_frame, from_=128, to=255, increment=1)
-    self.motor_c_velocity_box.pack(ipadx= 5, padx=10, pady=10, side=tk.LEFT)
+    self.motor_c_velocity_box = tk.Spinbox(motor_text_frame, from_=128, to=255, increment=1)
+    # self.motor_c_velocity_box.pack(ipadx= 5, padx=10, pady=10, side=tk.LEFT)
+    self.motor_c_velocity_box.grid(row=1, column=2)
+    self.motor_c_velocity_box.configure(width=18)
+
+    # Setup area to control
+    # forward velocity, top and right spin
+    relative_motor_control_frame = tk.Frame(self.root)
+    relative_motor_control_frame.pack(pady=10)
+
+    forward_velocity_text = tk.Text(relative_motor_control_frame, height=1, width=22)
+    forward_velocity_text.grid(row=0, column=0)    
+    forward_velocity_text.insert(tk.END, "Forward Velocity")
+    forward_velocity_text.config(state=tk.DISABLED)
+    forward_velocity_text.configure(bg='gray77')
+    # forward_velocity_text.config(justify=tk.CENTER)
+
+    right_spin_text = tk.Text(relative_motor_control_frame, height=1, width=22)
+    right_spin_text.grid(row=0, column=1)    
+    right_spin_text.insert(tk.END, "Right Spin")
+    right_spin_text.config(state=tk.DISABLED)
+    right_spin_text.configure(bg='gray77')
+    # right_spin_text.config(justify=tk.CENTER)
+
+    top_spin_text = tk.Text(relative_motor_control_frame, height=1, width=22)
+    top_spin_text.insert(tk.END, "Top Spin")
+    top_spin_text.grid(row=0, column=2)
+    top_spin_text.config(state=tk.DISABLED)
+    top_spin_text.configure(bg='gray77')
+    # top_spin_text.config(justify=tk.CENTER)
+
+    # forward velocity, top, and right spin boxes
+    self.forward_velocity_spinbox = tk.Spinbox(relative_motor_control_frame, from_=0, to=255, increment=1)
+    self.forward_velocity_spinbox.grid(row=1, column=0)
+    self.forward_velocity_spinbox.configure(width=18)
+
+    self.right_spin_spinbox = tk.Spinbox(relative_motor_control_frame, from_=0, to=255, increment=1)
+    self.right_spin_spinbox.grid(row=1,column=1)
+    self.right_spin_spinbox.configure(width=18)
+
+    self.top_spin_spinbox = tk.Spinbox(relative_motor_control_frame, from_=0, to=255, increment=1)
+    self.top_spin_spinbox.grid(row=1,column=2)
+    self.top_spin_spinbox.configure(width=18)
 
     # PID value boxes
     pid_section_frame = tk.Frame(self.root)
