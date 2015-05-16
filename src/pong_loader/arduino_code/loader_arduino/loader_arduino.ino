@@ -150,6 +150,7 @@ ros::Subscriber<std_msgs::Bool> load_sub("/loader/load_cmd", load_cmd_cb);
 
 void setup()
 {
+  nh.getHardware()->setBaud(57600);
   nh.initNode();
   nh.advertise(pub_state);
   nh.subscribe(load_sub);

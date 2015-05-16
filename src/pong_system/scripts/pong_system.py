@@ -32,6 +32,8 @@ class Pong_System:
         self.targeted = False
         self.manual = False
 
+        self.img = None
+
         ######## Do calibration routine here ###########
         self.init_calibration()
 
@@ -46,8 +48,9 @@ class Pong_System:
         self.loader_state_sub = rospy.Subscriber('/loader/state', String, self.state_cb)
         self.vision_state_sub = rospy.Subscriber('/vision/state', String, self.state_cb)
 
-        # subscribe to visions output
+        # subscribe to visions output and raw feed (for the gui)
         self.cup_loc_sub = rospy.Subscriber('/vision/cup_location', Vector3, self.cup_loc_cb)
+        self.image_feed_sub = rospy.Subscriber('/image_raw', Image, self.image_cb)
 
         # Publishers for each topic that the subsystems listen to
         # Loader cmd (True = Load, False = Do nothing)
@@ -85,18 +88,23 @@ class Pong_System:
              What happens here is the pixel coords are translated to world coordinates
                 and that is transformed to a motor velocity. Each motor velocity is set 
                 appropriately
+
+            Only updates if the system is in automatic mode
         '''
-        self.cup_loc = (msg.x, msg.y, msg.x)
-        X = msg.x
-        y = msg.y
-        z = msg.z
+        if not self.manual:
+            self.cup_loc = (msg.x, msg.y, msg.x)
+            X = msg.x
+            y = msg.y
+            z = msg.z
 
-        # transform pixel cup location to world location
+            # transform pixel cup location to world location
 
 
-        # transform world location to motor velocity
+            # transform world location to motor velocity
 
-        self.targeted = True
+            # set this to be the pixel we target
+
+            self.targeted = True
 
     def game_side_cb(self, msg):
         ''' Reading True means we are on offense.
@@ -167,6 +175,17 @@ class Pong_System:
         cmd.y = ki
         cmd.z = kd
         self.launcher_pid_pub.publish(cmd)
+
+    def image_cb(self, img_msg):
+        bridge = CvBridge()
+        cv_image = bridge.imgmsg_to_cv2(img_msg, "bgr8")
+
+        # cv2.imshow('Live Feed: Raw Image', cv_image)
+        # cv2.waitKey(1)
+        self.img = cv_image
+
+    def target_pixel_location(self, x, y):
+        print "Set up method to target pixel (x,y)"
 
 
 
@@ -262,7 +281,12 @@ class Select_Side():
 #import sift
 class System_GUI():
   def __init__(self, img, pong_system):
+    self.manual_mode = True
+    self.game_state = Game_State.SETUP
+
     self.root = tk.Tk()
+    self.root.resizable(0,0)
+    self.root.wm_title("GoldenEye v0.1")
     # tl = Tkinter.Toplevel(root)    
 
     # cv2.namedWindow("Display Window", cv2.WINDOW_AUTOSIZE)
@@ -275,16 +299,37 @@ class System_GUI():
     self.imgtk = ImageTk.PhotoImage(image=im)
 
     # insert image into panel
-    self.panel = tk.Label(self.root, image = self.imgtk)
-    self.panel.pack(side = "top", fill = "both", expand = "yes")
+    self.img_panel = tk.Label(self.root, image = self.imgtk)
+    self.img_panel.pack(side = "top", fill = "both", expand = "no")
+    self.img_panel.bind("<Button-1>", self.img_clicked_button)
 
     # Game State Text....need method for updating this to offense and defense
-    self.game_state_text = tk.Text(self.root, height=1, width = 8)
-    self.game_state_text.config(bg='gray77')
-    self.game_state_text.config(fg='black')
-    self.game_state_text.pack(pady=30)
-    self.game_state_text.insert(tk.END, " SETUP")
-    self.game_state_text.config(state=tk.DISABLED)
+    self.game_state_panel = tk.Frame(self.root)
+    self.game_state_panel.pack(pady = 40)
+
+    self.game_setup_text = tk.Text(self.game_state_panel, height=1, width = 8)
+    self.game_setup_text.config(bg='green2')
+    self.game_setup_text.config(fg='black')
+    self.game_setup_text.grid(row=0,column=0)
+    self.game_setup_text.insert(tk.END, " Setup")
+    self.game_setup_text.config(state=tk.DISABLED)
+    self.game_setup_text.bind('<Button-1>', self.setup_state)
+
+    self.game_offense_text = tk.Text(self.game_state_panel, height=1, width = 10)
+    self.game_offense_text.config(bg='gray77')
+    self.game_offense_text.config(fg='black')
+    self.game_offense_text.grid(row=0,column=1)
+    self.game_offense_text.insert(tk.END, " Offense")
+    self.game_offense_text.config(state=tk.DISABLED)
+    self.game_offense_text.bind('<Button-1>', self.offense_state)
+
+    self.game_defense_text = tk.Text(self.game_state_panel, height=1, width = 10)
+    self.game_defense_text.config(bg='gray77')
+    self.game_defense_text.config(fg='black')
+    self.game_defense_text.grid(row=0, column=2)
+    self.game_defense_text.insert(tk.END, " Defense")
+    self.game_defense_text.config(state=tk.DISABLED)
+    self.game_defense_text.bind('<Button-1>', self.defense_state)
 
     # motor spin boxes section
     motor_text_frame = tk.Frame(self.root)
@@ -370,8 +415,6 @@ class System_GUI():
     self.kd_box.configure(width=5)
 
 
-
-
     # What mode are we in, automatic or manual
     self.mode_val = tk.IntVar()
     self.manual_button = tk.Radiobutton(self.root, text="Manual", variable=self.mode_val, value=1, command=self.mode_change)
@@ -404,12 +447,17 @@ class System_GUI():
     self.quit_button.bind('<Button-1>', self.quit)
 
     self.root.bind("<Return>", self.fire)
-    self.root.bind("p", self.update_img(None))
+    self.root.bind("p", self.update_img)
 
     # # display updated picture occasionally
-    self.root.after(100, self.update_img(None))
+    self.root.after(100, self.update_img)
 
   def start_gui(self):
+    # update image 
+    self.update_img()
+
+    # select manual mode
+    self.manual_button.select()
 
     # start the GUI
     self.root.mainloop()
@@ -445,22 +493,93 @@ class System_GUI():
     print 'Quit'
 
   def mode_change(self):
-    print 'Selection changed to: ', self.mode_val.get()
+    # print 'Selection changed to: ', self.mode_val.get()
+    if self.mode_val.get() == 1:
+        self.manual_mode = True
+        self.pong_system.manual = True
+    else:
+        self.manual_mode = False
+        self.pong_system.manual = False
 
-  def update_img(self, arg):
+  def update_img(self, arg=None):
     # get image from pong system class
+    img = self.pong_system.img
 
-    # convert image to be friendly with tkinter
-    # rearrange color channel
-    print 'update_img'
-    print arg
+    if img is not None:
+        # convert image to be friendly with tkinter
+        # rearrange color channel
+        # print arg
+        self.root.after(100, self.update_img)
 
-    # b,g,r = cv2.split(img)
-    # img = cv2.merge((r,g,b))
+        b,g,r = cv2.split(img)
+        img = cv2.merge((r,g,b))
 
-    # im = PilImage.fromarray(img)
-    # imgtk = ImageTk.PhotoImage(image=im)
+        im = PilImage.fromarray(img)
+        self.imgtk = ImageTk.PhotoImage(image=im)
 
+        self.img_panel.configure(image=self.imgtk)
+
+  def img_clicked_button(self, arg):
+    ''' If the system is in manual mode, then take the click and 
+        aim for the selected alrea. Otherwise, ignore the click.
+    '''
+
+    if self.manual_mode:
+        # Turn the canvas click points into points that are relative to the image location
+        # print "im size", self.imgtk.  
+        canvas_width = self.img_panel.winfo_width()
+        canvas_height = self.img_panel.winfo_height()
+
+        # img_width, img_height = self.pong_system.img.shape
+        img_width = self.imgtk.width()
+        img_height = self.imgtk.height()
+
+        # canvas width minus image width
+        x_offset = (canvas_width - img_width) / 2
+        y_offset = (canvas_height - img_height) / 2
+        
+        # click relative to img pixel
+        x_img_pixel = arg.x - x_offset
+        y_img_pixel = arg.y - y_offset
+        
+        # print "panel clicked"
+        # print '({0},{1})'.format(arg.x, arg.y)
+        # print "canvas width: ", canvas_width
+        # print "canvas height: ", canvas_height
+        # print "Image width: ", img_width
+        # print "Image height: ", img_height
+        # print "x offset: ", x_offset
+        # print "y offset: ", y_offset
+        # print "X pixel on image: ", x_img_pixel
+        # print "Y pixel on image: ", y_img_pixel
+        # print 
+        # print 
+
+        # feed the information to the pong system
+
+  def setup_state(self, arg=None):
+    # print " setup "
+    self.game_setup_text.config(bg='green2')
+    self.game_offense_text.config(bg='gray77')
+    self.game_defense_text.config(bg='gray77')
+
+    self.game_state = Game_State.SETUP
+
+  def offense_state(self, arg=None):
+    # print "offense "
+    self.game_setup_text.config(bg='gray77')
+    self.game_offense_text.config(bg='green2')
+    self.game_defense_text.config(bg='gray77')
+
+    self.game_state = Game_State.OFFENSE
+
+  def defense_state(self, arg=None):
+    # print "defense"
+    self.game_setup_text.config(bg='gray77')
+    self.game_offense_text.config(bg='gray77')
+    self.game_defense_text.config(bg='green2')
+
+    self.game_state = Game_State.DEFENSE
 
 def main():
 
