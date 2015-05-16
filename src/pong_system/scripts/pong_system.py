@@ -282,6 +282,7 @@ class Select_Side():
 class System_GUI():
   def __init__(self, img, pong_system):
     self.manual_mode = True
+    self.game_state = Game_State.SETUP
 
     self.root = tk.Tk()
     self.root.resizable(0,0)
@@ -303,12 +304,32 @@ class System_GUI():
     self.img_panel.bind("<Button-1>", self.img_clicked_button)
 
     # Game State Text....need method for updating this to offense and defense
-    self.game_state_text = tk.Text(self.root, height=1, width = 8)
-    self.game_state_text.config(bg='gray77')
-    self.game_state_text.config(fg='black')
-    self.game_state_text.pack(pady=30)
-    self.game_state_text.insert(tk.END, " SETUP")
-    self.game_state_text.config(state=tk.DISABLED)
+    self.game_state_panel = tk.Frame(self.root)
+    self.game_state_panel.pack(pady = 40)
+
+    self.game_setup_text = tk.Text(self.game_state_panel, height=1, width = 8)
+    self.game_setup_text.config(bg='green2')
+    self.game_setup_text.config(fg='black')
+    self.game_setup_text.grid(row=0,column=0)
+    self.game_setup_text.insert(tk.END, " Setup")
+    self.game_setup_text.config(state=tk.DISABLED)
+    self.game_setup_text.bind('<Button-1>', self.setup_state)
+
+    self.game_offense_text = tk.Text(self.game_state_panel, height=1, width = 10)
+    self.game_offense_text.config(bg='gray77')
+    self.game_offense_text.config(fg='black')
+    self.game_offense_text.grid(row=0,column=1)
+    self.game_offense_text.insert(tk.END, " Offense")
+    self.game_offense_text.config(state=tk.DISABLED)
+    self.game_offense_text.bind('<Button-1>', self.offense_state)
+
+    self.game_defense_text = tk.Text(self.game_state_panel, height=1, width = 10)
+    self.game_defense_text.config(bg='gray77')
+    self.game_defense_text.config(fg='black')
+    self.game_defense_text.grid(row=0, column=2)
+    self.game_defense_text.insert(tk.END, " Defense")
+    self.game_defense_text.config(state=tk.DISABLED)
+    self.game_defense_text.bind('<Button-1>', self.defense_state)
 
     # motor spin boxes section
     motor_text_frame = tk.Frame(self.root)
@@ -536,6 +557,29 @@ class System_GUI():
 
         # feed the information to the pong system
 
+  def setup_state(self, arg=None):
+    # print " setup "
+    self.game_setup_text.config(bg='green2')
+    self.game_offense_text.config(bg='gray77')
+    self.game_defense_text.config(bg='gray77')
+
+    self.game_state = Game_State.SETUP
+
+  def offense_state(self, arg=None):
+    # print "offense "
+    self.game_setup_text.config(bg='gray77')
+    self.game_offense_text.config(bg='green2')
+    self.game_defense_text.config(bg='gray77')
+
+    self.game_state = Game_State.OFFENSE
+
+  def defense_state(self, arg=None):
+    # print "defense"
+    self.game_setup_text.config(bg='gray77')
+    self.game_offense_text.config(bg='gray77')
+    self.game_defense_text.config(bg='green2')
+
+    self.game_state = Game_State.DEFENSE
 
 def main():
 
