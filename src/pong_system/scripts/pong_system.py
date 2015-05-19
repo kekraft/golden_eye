@@ -10,6 +10,7 @@ import time
 from matplotlib import pyplot as plt
 import copy
 import sys
+import time
 
 # from Tkinter import *
 import Tkinter as tk
@@ -41,6 +42,12 @@ class Pong_System:
         self.motor_a = Motor("motor_a")
         self.motor_b = Motor("motor_b")
         self.motor_c = Motor("motor_c")
+        self.motor_a.pwm = 25
+        self.motor_b.pwm = 0
+        self.motor_c.pwm = 0
+        self.motor_a.speed = 0
+        self.motor_b.speed = 0
+        self.motor_c.speed = 0
 
         # Subscribers to each subsystem state
         self.game_state_sub = rospy.Subscriber('/game/state', String, self.state_cb)
@@ -62,6 +69,9 @@ class Pong_System:
         # Vector3.x = kp, Vector3.y = ki, Vector3.z = kd
         self.launcher_pid_pub = rospy.Publisher('/launcher/pid_val', Vector3, queue_size=10)
 
+        # subscribe to speed output of the launcher
+        self.launcher_speed_sub = rospy.Subscriber('/launcher/speed', Vector3, self.speed_cb)
+
         # subscribe to game state
         # a true message sent to this topic means we are on offense and should shoot
         # a false message sent to this topic means we are on defense and should do targeting
@@ -74,6 +84,9 @@ class Pong_System:
             self.state = Game_State.OFFENSE
         else:
             self.state = Game_State.DEFENSE
+
+        ## Make sure mototrs start at correct speeds
+        self.update_motor_speed(self.motor_a.pwm, self.motor_b.pwm, self.motor_c.pwm)
 
 
     def state_cb(self, msg):
@@ -167,6 +180,11 @@ class Pong_System:
         cmd.z = motor_c_speed
         self.launcher_motor_vel_pub.publish(cmd)
 
+    def speed_cb(self, msg):
+        self.motor_a.speed = msg.x
+        self.motor_b.speed = msg.y
+        self.motor_c.speed = msg.z
+
     def update_pid_values(self, kp, ki, kd):
         msg = 'Updating PID values to {0}, {1}, {2}.'.format(kp, ki, kd)
         rospy.loginfo(msg)
@@ -187,11 +205,15 @@ class Pong_System:
     def target_pixel_location(self, x, y):
         print "Set up method to target pixel (x,y)"
 
+    def shutdown(self, msg):
+        rospy.signal_shutdown(msg)
+
 
 
 class Motor:
     name = "none"
-    vel = 0.0
+    speed = 0.0
+    pwm = 0
     p = 0.0
     i = 0.0
     d = 0.0
@@ -305,7 +327,7 @@ class System_GUI():
 
     # Game State Text....need method for updating this to offense and defense
     self.game_state_panel = tk.Frame(self.root)
-    self.game_state_panel.pack(pady = 40)
+    self.game_state_panel.pack(pady = 10)
 
     self.game_setup_text = tk.Text(self.game_state_panel, height=1, width = 8)
     self.game_setup_text.config(bg='green2')
@@ -330,6 +352,38 @@ class System_GUI():
     self.game_defense_text.insert(tk.END, " Defense")
     self.game_defense_text.config(state=tk.DISABLED)
     self.game_defense_text.bind('<Button-1>', self.defense_state)
+
+
+    ##### Text entries for current motor speeds #######
+    self.cur_speed_panel = tk.Frame(self.root)
+    self.cur_speed_panel.pack(pady=10)
+
+    self.cur_speed_a_text = tk.Text(self.cur_speed_panel, height=1, width = 8)
+    self.cur_speed_a_text.grid(row=0, column=0)
+    self.cur_speed_a_text.insert(tk.END, " A: Cur")
+    self.cur_speed_a_text.config(state=tk.DISABLED)
+    
+    self.cur_speed_b_text = tk.Text(self.cur_speed_panel, height=1, width = 8)
+    self.cur_speed_b_text.grid(row=0, column=1)
+    self.cur_speed_b_text.insert(tk.END, " B: Cur")
+    self.cur_speed_b_text.config(state=tk.DISABLED)
+        
+    self.cur_speed_c_text = tk.Text(self.cur_speed_panel, height=1, width = 8)
+    self.cur_speed_c_text.grid(row=0, column=2)
+    self.cur_speed_c_text.insert(tk.END, " C: Cur")
+    self.cur_speed_c_text.config(state=tk.DISABLED)
+
+    self.cur_speed_a_val = tk.Label(self.cur_speed_panel, height=1, width = 8)
+    self.cur_speed_a_val.grid(row=1, column=0)
+    # self.cur_speed_a_val.insert(tk.END, "")
+    
+    self.cur_speed_b_val = tk.Label(self.cur_speed_panel, height=1, width = 8)
+    self.cur_speed_b_val.grid(row=1, column=1)
+    # self.cur_speed_b_val.insert(tk.END, "")
+        
+    self.cur_speed_c_val = tk.Label(self.cur_speed_panel, height=1, width = 8)
+    self.cur_speed_c_val.grid(row=1, column=2)
+    # self.cur_speed_c_val.insert(tk.END, "")
 
     # motor spin boxes section
     motor_text_frame = tk.Frame(self.root)
@@ -362,17 +416,17 @@ class System_GUI():
     # motor_box_frame = tk.Frame(self.root)
     # motor_box_frame.pack()
 
-    self.motor_a_velocity_box = tk.Spinbox(motor_text_frame, from_=128, to=255, increment=1)
+    self.motor_a_velocity_box = tk.Spinbox(motor_text_frame, from_=25, to=255, increment=1)
     # self.motor_a_velocity_box.pack(ipadx=5, padx=10, pady=10, side=tk.LEFT)
     self.motor_a_velocity_box.grid(row=1, column=0)
     self.motor_a_velocity_box.configure(width=18)
 
-    self.motor_b_velocity_box = tk.Spinbox(motor_text_frame, from_=128, to=255, increment=1)
+    self.motor_b_velocity_box = tk.Spinbox(motor_text_frame, from_=0, to=255, increment=1)
     # self.motor_b_velocity_box.pack(ipadx=5, padx=10, pady=10, side=tk.LEFT)    
     self.motor_b_velocity_box.grid(row=1, column=1)
     self.motor_b_velocity_box.configure(width=18)
 
-    self.motor_c_velocity_box = tk.Spinbox(motor_text_frame, from_=128, to=255, increment=1)
+    self.motor_c_velocity_box = tk.Spinbox(motor_text_frame, from_=0, to=255, increment=1)
     # self.motor_c_velocity_box.pack(ipadx= 5, padx=10, pady=10, side=tk.LEFT)
     self.motor_c_velocity_box.grid(row=1, column=2)
     self.motor_c_velocity_box.configure(width=18)
@@ -503,6 +557,9 @@ class System_GUI():
     # # display updated picture occasionally
     self.root.after(100, self.update_img)
 
+    # # display updated speed occasionally
+    self.root.after(100, self.update_speeds_label)
+
   def start_gui(self):
     # update image 
     self.update_img()
@@ -541,7 +598,11 @@ class System_GUI():
 
 
   def quit(self, arg):
+    self.pong_system.update_motor_speed(25, 0, 0)
     print 'Quit'
+    time.sleep(.5)
+    self.pong_system.shutdown("Quit pressed in GUI")
+    self.root.destroy()
 
   def mode_change(self):
     # print 'Selection changed to: ', self.mode_val.get()
@@ -569,6 +630,20 @@ class System_GUI():
         self.imgtk = ImageTk.PhotoImage(image=im)
 
         self.img_panel.configure(image=self.imgtk)
+
+  def update_speeds_label(self, arg=None):
+    # get speeds from motors 
+    motor_a_speed = self.pong_system.motor_a.speed
+    motor_b_speed = self.pong_system.motor_b.speed
+    motor_c_speed = self.pong_system.motor_c.speed
+
+    self.cur_speed_a_val.configure(text = str(motor_a_speed))
+    self.cur_speed_b_val.configure(text = str(motor_b_speed))
+    self.cur_speed_c_val.configure(text = str(motor_c_speed))
+
+    # # display updated speed occasionally
+    self.root.after(100, self.update_speeds_label)
+
 
   def img_clicked_button(self, arg):
     ''' If the system is in manual mode, then take the click and 

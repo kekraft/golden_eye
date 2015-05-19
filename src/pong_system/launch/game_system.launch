@@ -1,26 +1,26 @@
 <launch>
    <!-- Start the web camera driver node -->
   
-  <node pkg="uvc_camera" type="uvc_camera_node" name="camera_node" />
+  <node pkg="uvc_camera" type="uvc_camera_node" name="camera_node" respawn="true" />
 
   <!-- Start the actual vision script -->
-  <node pkg="pong_vision" type="updated_cup_detection.py" name="vision_node" />
+  <node pkg="pong_vision" type="updated_cup_detection.py" name="vision_node" respawn="true"/>
 
   <!-- Start ROS serial with launcher -->
    <!-- !!!!!! Check port value !!!!!!! -->
-  <node pkg="rosserial_python" type="serial_node.py" name="launcher_node">
+  <node pkg="rosserial_python" type="serial_node.py" name="launcher_node" respawn="true">
     <param name="port" value="/dev/ttyACM1"/>
     <param name="baud" value="9600"/>
   </node>
 
   <!-- Start ROS serial with loader -->
   <!-- !!!!!! Check port value !!!!!!! -->
-  <node pkg="rosserial_python" type="serial_node.py" name="loader_node">
+  <node pkg="rosserial_python" type="serial_node.py" name="loader_node" respawn="true">
     <param name="port" value="/dev/ttyACM0"/>
     <param name="baud" value="9600"/>
   </node>
 
   <!-- Start system game script -->
-  <node pkg="pong_system" type="pong_system.py" name="central_node" />
+  <node pkg="pong_system" type="pong_system.py" name="central_node" required="true"/>
 
  </launch>
