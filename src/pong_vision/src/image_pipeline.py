@@ -273,6 +273,6 @@ if __name__ == '__main__':
     ip = Image_Pipeline()
 
     # run pipeline with a given image 
-    img = cv2.img = cv2.imread("images/saved.jpg", 1)
+    img = cv2.img = cv2.imread("../images/saved.jpg", 1)
 
     ip.run_pipeline(img)

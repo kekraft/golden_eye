@@ -42,7 +42,7 @@ class Pong_System:
         self.motor_a = Motor("motor_a")
         self.motor_b = Motor("motor_b")
         self.motor_c = Motor("motor_c")
-        self.motor_a.pwm = 25
+        self.motor_a.pwm = 0
         self.motor_b.pwm = 0
         self.motor_c.pwm = 0
         self.motor_a.speed = 0
@@ -353,6 +353,33 @@ class System_GUI():
     self.game_defense_text.config(state=tk.DISABLED)
     self.game_defense_text.bind('<Button-1>', self.defense_state)
 
+    ####### Panel to control distance of frame and table ########
+    self.vision_panel = tk.Frame(self.root)
+    self.vision_panel.pack(pady=10)
+
+    self.dist_at_top_label = tk.Label(self.vision_panel)
+    self.dist_at_top_label.grid(row=0, column=0)
+    self.dist_at_top_label.configure(text = "Top Distance")
+
+    self.dist_at_bot_label = tk.Label(self.vision_panel)
+    self.dist_at_bot_label.grid(row=0, column=1)
+    self.dist_at_bot_label.configure(text = "Bottom Distance")
+
+    self.table_width_label = tk.Label(self.vision_panel)
+    self.table_width_label.grid(row=0, column=2)
+    self.table_width_label.configure(text = "Table Width")
+
+    self.dist_at_top_entry = tk.Spinbox(self.vision_panel, from_=0, to=10, increment=1)
+    self.dist_at_top_entry.grid(row=1, column=0)
+    self.dist_at_top_entry.config(width = 18)
+
+    self.dist_at_bot_entry = tk.Spinbox(self.vision_panel, from_=0, to=10, increment=1)
+    self.dist_at_bot_entry.grid(row=1, column=1)
+    self.dist_at_bot_entry.config(width = 18)
+
+    self.table_width_entry = tk.Spinbox(self.vision_panel, from_=0, to=10, increment=1)
+    self.table_width_entry.grid(row=1, column=2)
+    self.table_width_entry.config(width = 18)
 
     ##### Text entries for current motor speeds #######
     self.cur_speed_panel = tk.Frame(self.root)
@@ -416,7 +443,7 @@ class System_GUI():
     # motor_box_frame = tk.Frame(self.root)
     # motor_box_frame.pack()
 
-    self.motor_a_velocity_box = tk.Spinbox(motor_text_frame, from_=25, to=255, increment=1)
+    self.motor_a_velocity_box = tk.Spinbox(motor_text_frame, from_=0, to=255, increment=1)
     # self.motor_a_velocity_box.pack(ipadx=5, padx=10, pady=10, side=tk.LEFT)
     self.motor_a_velocity_box.grid(row=1, column=0)
     self.motor_a_velocity_box.configure(width=18)
@@ -504,15 +531,15 @@ class System_GUI():
     pid_button_frame = tk.Frame(pid_section_frame)
     # pid_button_frame.pack()
     pid_button_frame.grid(row=1, column=0)
-    self.ki_box = tk.Spinbox(pid_button_frame, from_=0, to=10, increment=.1)
-    # self.ki_box.pack(side=tk.LEFT)
-    self.ki_box.grid(row=0, column=0)
-    self.ki_box.configure(width=5)
-
     self.kp_box = tk.Spinbox(pid_button_frame, from_=0, to=10, increment=.1)
     # self.kp_box.pack(side=tk.LEFT)
-    self.kp_box.grid(row=0, column=1)
+    self.kp_box.grid(row=0, column=0)
     self.kp_box.configure(width=5)
+
+    self.ki_box = tk.Spinbox(pid_button_frame, from_=0, to=10, increment=.1)
+    # self.kp_box.pack(side=tk.LEFT)
+    self.ki_box.grid(row=0, column=1)
+    self.ki_box.configure(width=5)
 
     self.kd_box = tk.Spinbox(pid_button_frame, from_=0, to=10, increment=.1)
     # self.kd_box.pack(side=tk.LEFT)
@@ -598,7 +625,7 @@ class System_GUI():
 
 
   def quit(self, arg):
-    self.pong_system.update_motor_speed(25, 0, 0)
+    self.pong_system.update_motor_speed(0, 0, 0)
     print 'Quit'
     time.sleep(.5)
     self.pong_system.shutdown("Quit pressed in GUI")
@@ -637,9 +664,13 @@ class System_GUI():
     motor_b_speed = self.pong_system.motor_b.speed
     motor_c_speed = self.pong_system.motor_c.speed
 
-    self.cur_speed_a_val.configure(text = str(motor_a_speed))
-    self.cur_speed_b_val.configure(text = str(motor_b_speed))
-    self.cur_speed_c_val.configure(text = str(motor_c_speed))
+    motor_a_speed_str = '{0:.2f}'.format(motor_a_speed)
+    motor_b_speed_str = '{0:.2f}'.format(motor_b_speed)
+    motor_c_speed_str = '{0:.2f}'.format(motor_c_speed)
+
+    self.cur_speed_a_val.configure(text = motor_a_speed_str)
+    self.cur_speed_b_val.configure(text = motor_a_speed_str)
+    self.cur_speed_c_val.configure(text = motor_a_speed_str)
 
     # # display updated speed occasionally
     self.root.after(100, self.update_speeds_label)
@@ -710,14 +741,15 @@ class System_GUI():
 def main():
 
     # Have the user dictate whether or not they are on offense
-    side = Select_Side()
-    selected = side.selected
-    assert(selected)
-    on_offense = side.on_offense
+    # side = Select_Side()
+    # selected = side.selected
+    # assert(selected)
+    # on_offense = side.on_offense
 
     rospy.init_node('pong_system')
 
-    pong = Pong_System(on_offense)
+    # pong = Pong_System(on_offense)
+    pong = Pong_System(on_offense=True)
 
     start_system_gui(pong)
     

@@ -326,11 +326,11 @@ class Pong_Vision:
         bridge = CvBridge()
         cv_image = bridge.imgmsg_to_cv2(img_msg, "bgr8")
 
-        cv2.imshow('Live Feed: Raw Image', cv_image)
-        cv2.imwrite("saved.jpg", cv_image)
-        cv2.waitKey(1)
+        # cv2.imshow('Live Feed: Raw Image', cv_image)
+        # cv2.imwrite("saved.jpg", cv_image)
+        # cv2.waitKey(1)
 
-        edged = self.blurred_edge(cv_image, 5)
+        # edged = self.blurred_edge(cv_image, 5)
         # cv2.imshow("Blurred Edged Scene", edged)
         # cv2.waitKey(1)
 

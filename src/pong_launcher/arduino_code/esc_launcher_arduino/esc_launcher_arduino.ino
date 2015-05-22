@@ -64,17 +64,17 @@ Servo motorC;
 //};
 
 //Hall effect sensors
-int ha1 = 2;
-int ha2 = A5;
-int ha3 = A9;
+int ha1 = A8;
+int ha2 = A7;
+int ha3 = A6;
 
-int hb1 = A10;
-int hb2 = A11;
-int hb3 = A13;
+int hb1 = A5;
+int hb2 = A4;
+int hb3 = A3;
 
-int hc1 = 29;
-int hc2 = 30;
-int hc3 = 31;
+int hc1 = A2;
+int hc2 = A1;
+int hc3 = A0;
 
 //Hall effect sensor variables
 volatile double curSpeedA = 0.0, curSpeedB = 0.0, curSpeedC = 0.0;
@@ -170,7 +170,7 @@ void arm_servos(){
  motorC.write(0);
 
  //delay 1 second,  some speed controllers may need longer
- delay(1000); 
+ delay(5000); 
 }
 
 void setup(){
@@ -249,9 +249,9 @@ void A(){
 	hallA2 = digitalRead(ha2);
 	hallA3 = digitalRead(ha3);
 	time = millis();
-	curSpeedA = 1/(3 * (time - timeoldA)); // just remove the 3
+	curSpeedA = 3/(14 * (time - timeoldA)); // just remove the 3
         // 3 digital rotations per single mechanical rotation
-        curSpeedA *= 3;
+//        curSpeedA *= 3;
 	timeoldA = time;
 	oldSpeedA = curSpeedA;
 }
@@ -266,9 +266,9 @@ void B() {
 	hallB3 = digitalRead(hb3);
 
 	time = millis();
-	curSpeedB = 1/(3 * (time - timeoldB)); // just remove the 3
+	curSpeedB = 3/(14 * (time - timeoldB)); // just remove the 3
         // 3 digital rotations per single mechanical rotation
-        curSpeedB *= 3;
+//        curSpeedB *= 3;
 	timeoldB = time;
 	oldSpeedB = curSpeedB;
 }
@@ -283,9 +283,9 @@ void C() {
 	hallC3 = digitalRead(hc3);
 
 	time = millis();
-	curSpeedC = 1/(3 * (time - timeoldC)); // just remove the 3
+	curSpeedC = 3/(14 * (time - timeoldC)); // just remove the 3
         // 3 digital rotations per single mechanical rotation
-        curSpeedC *= 3;
+//        curSpeedC *= 3;
 	timeoldC = time;
 	oldSpeedC = curSpeedC;
 }
