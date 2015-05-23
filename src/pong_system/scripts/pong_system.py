@@ -625,12 +625,36 @@ class System_GUI():
 
     self.root.bind("<Return>", self.fire)
     self.root.bind("p", self.update_img)
+    self.root.bind("c", self.calibrate)
 
     # # display updated picture occasionally
     self.root.after(100, self.update_img)
 
     # # display updated speed occasionally
     self.root.after(100, self.update_speeds_label)
+
+    
+
+  def calibrate(self, arg):
+    # camera calibration
+    # select four corners of image to do translation points
+    corner_calibrate = Calibrate_Pixel_2_World()
+    img = self.pong_system.img
+
+    if img != None:
+        corner_calibrate.start_calibration(img)
+
+        self.vision_helper.top_cup_left_row = corner_calibrate.top_cup_left_row
+        self.vision_helper.top_cup_left_col = corner_calibrate.top_cup_left_col
+
+        self.vision_helper.top_cup_right_row = corner_calibrate.top_cup_right_row
+        self.vision_helper.top_cup_right_col = corner_calibrate.top_cup_right_col
+
+        self.vision_helper.bot_cup_left_row = corner_calibrate.bot_cup_left_row
+        self.vision_helper.bot_cup_left_col = corner_calibrate.bot_cup_left_col
+
+        self.vision_helper.bot_cup_right_row = corner_calibrate.bot_cup_right_row
+        self.vision_helper.bot_cup_right_col = corner_calibrate.bot_cup_right_col
 
   def start_gui(self):
     # update image 
@@ -768,7 +792,7 @@ class System_GUI():
     self.pixel_value_label.configure(text = pixel_value_string)
 
     # get lateral and dist value
-    lateral, dist = self.vision_helper.calc_position_from_pixel(row, col)
+    dist, lateral = self.vision_helper.calc_position_from_pixel(row, col)
     self.lat_value_label.configure(text = str(lateral))
     self.dist_value_label.configure(text = str(dist))
 
@@ -798,9 +822,6 @@ class System_GUI():
     self.game_state = Game_State.DEFENSE
 
 def main():
-
-    # camera calibration
-    # select four corners of image to do translation points
 
     # Have the user dictate whether or not they are on offense
     #side = Select_Side()
