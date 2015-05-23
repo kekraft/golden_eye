@@ -52,6 +52,13 @@ class Vision_Helper:
 		# returns the distance from the robot to the pixel value
 		# and the lateral distance of the pixel value from center of table
 		distance = self.get_dist_from_row_pixel(row)
+
+		
+		self.calc_center_endpts()
+		self.calc_center_slope()
+		self.calc_LH()
+		self.calc_RH()
+
 		lateral = self.calc_lateral(row, col)
 		return distance, lateral
 
@@ -69,8 +76,8 @@ class Vision_Helper:
 		#   the distance at the top of the image is known
 		#   the distance at the bottom of the image is known
 		# in this case, y = height and x = row
-		self.dist_intercept = dist_at_top
-		height = calc_dist_slope * row + self.dist_intercept
+		self.dist_intercept = self.dist_at_top
+		height = self.calc_dist_slope() * row + self.dist_intercept
 		return height
 
 	#### Methods that deal with obtaining the lateral position of a column pixel
@@ -88,7 +95,7 @@ class Vision_Helper:
 		else:
 			closer_top_row = self.top_cup_right_row
 
-		self.top_center_pt_row = closer_top_row + math.abs(((self.top_cup_left_row - self.top_cup_right_row)/2.0))
+		self.top_center_pt_row = closer_top_row + abs(((self.top_cup_left_row - self.top_cup_right_row)/2.0))
 
 		closer_bot_row = -999
 		if self.bot_cup_left_row < self.bot_cup_right_row:
@@ -96,7 +103,7 @@ class Vision_Helper:
 		else:
 			closer_bot_row = self.bot_cup_right_row
 		
-		self.bot_center_pt_row = closer_bot_row + math.abs(((self.bot_cup_left_row - self.bot_cup_right_row)/2.0))
+		self.bot_center_pt_row = closer_bot_row + abs(((self.bot_cup_left_row - self.bot_cup_right_row)/2.0))
 
 	def calc_center_slope(self):
 		# calculating slope of center line (x is considered rows, y is considered columns..) (image is rotated right 90 degrees for this perspective)
@@ -134,7 +141,7 @@ class Vision_Helper:
 	def calc_col_on_rh(self, row):
 		# note (x is considered rows, y is considered columns..) (image is rotated right 90 degrees for this perspective)
 		# calculate intercept for rh line
-		self.rh_intercept = self.top_cup_right_col - (self.rh_m * self.top_cup_right_row)
+		self.rh_intercept = self.top_cup_right_col - (self.lh_m * self.top_cup_right_row)
 		
 		col = self.rh_m * row + self.rh_intercept
 		return col
@@ -143,7 +150,7 @@ class Vision_Helper:
 		# note (x is considered rows, y is considered columns..) (image is rotated right 90 degrees for this perspective)
 		# find matching point on center line
 		# assume it ins on the same row since we are assuming we are facing the table square on.
-		center_col = get_col_on_center(self, row)		
+		center_col = self.calc_col_on_center(row)		
 		
 		# take distance between pts
 		dist_to_center = math.sqrt( (col - center_col) * (col - center_col) )
@@ -154,7 +161,7 @@ class Vision_Helper:
 		# note (x is considered rows, y is considered columns..) (image is rotated right 90 degrees for this perspective)
 		# find matching point on lh line
 		# assume it ins on the same row since we are assuming we are facing the table square on.
-		lh_col = get_col_on_lh(self, row)
+		lh_col = self.calc_col_on_lh(row)
 		
 		dist_to_lh = math.sqrt( (col - lh_col) * (col - lh_col))
 
@@ -164,7 +171,7 @@ class Vision_Helper:
 		# note (x is considered rows, y is considered columns..) (image is rotated right 90 degrees for this perspective)
 		# find matching point on rh line
 		# assume it ins on the same row since we are assuming we are facing the table square on.
-		rh_col = get_col_on_rh(self, row)
+		rh_col = self.calc_col_on_rh(row)
 
 		dist_to_rh = math.sqrt( (col - rh_col) * (col - rh_col))
 		
@@ -174,31 +181,31 @@ class Vision_Helper:
 		# + = right of table center, - = left of table center
 
 		# see if in rh or lh side
-		rh_dist = self.get_dist_to_rh(row, col)
-		lh_dist = self.get_dist_to_lh(row, col)
+		rh_dist = self.calc_dist_to_rh(row, col)
+		lh_dist = self.calc_dist_to_lh(row, col)
 
 		if rh_dist < lh_dist:
 			on_right = True
 			dist_from_outer = rh_dist
 		
 			# see how far away rh is away from center (which in reality is half the width of the table)
-			outer_col = self.get_col_on_rh(row)			
+			outer_col = self.calc_col_on_rh(row)			
 
 		else:
 			on_right = False
 			dist_from_outer = lh_dist
 			
 			# see how far away hh is away from center (which in reality is half the width of the table)
-			outer_col = self.get_col_on_lh(row)
+			outer_col = self.calc_col_on_lh(row)
 					
 		# get distance from outer col to center (to see what that section length is in pixels)	
-		outer_to_center_dist = self.get_dist_to_center(row, outer_col)
+		outer_to_center_dist = self.calc_dist_to_center(row, outer_col)
 		
 		# get percentage distance on outer side from center compared to section dist
 		percent_dist = 1.0 - (dist_from_outer / outer_to_center_dist)
 		
 		# convert percentage distance of pixels to actual table width
-		lateral_dist = percent_dist / (table_width / 2.0)
+		lateral_dist = percent_dist / (self.table_width / 2.0)
 
 		if on_right:
 			return lateral_dist

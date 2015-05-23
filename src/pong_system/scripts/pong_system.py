@@ -27,6 +27,26 @@ from geometry_msgs.msg import Vector3
 from sensor_msgs.msg import Image
 from sensor_msgs.msg import CameraInfo
 
+# import vision helper functions
+import os
+directory = os.path.realpath(__file__)
+# print directory
+vision_direct = os.path.join(directory, '../../../pong_vision/src')
+vision_direct = os.path.abspath(vision_direct)
+# print vision_direct
+sys.path.append(vision_direct)
+
+from vision_helper import *
+
+# path debugging
+# try:
+#     user_paths = os.environ['PYTHONPATH'].split(os.pathsep)
+#     for path in user_paths:
+#         print path
+#         print
+# except KeyError:
+#     user_paths = []
+
 class Pong_System:
     def __init__(self, on_offense = False):
         self.state = Game_State.SETUP
@@ -306,6 +326,9 @@ class System_GUI():
     self.manual_mode = True
     self.game_state = Game_State.SETUP
 
+    # vision helper class
+    self.vision_helper = Vision_Helper()
+
     self.root = tk.Tk()
     self.root.resizable(0,0)
     self.root.wm_title("GoldenEye v0.1")
@@ -324,6 +347,28 @@ class System_GUI():
     self.img_panel = tk.Label(self.root, image = self.imgtk)
     self.img_panel.pack(side = "top", fill = "both", expand = "no")
     self.img_panel.bind("<Button-1>", self.img_clicked_button)
+
+    # output position relative to clicks
+    self.click_panel = tk.Frame(self.root)
+    self.click_panel.pack()
+
+    self.pixel_label = tk.Label(self.click_panel)
+    self.pixel_label.grid(row=0,column=0)
+    self.pixel_label.configure(text = "Pixel")
+    self.pixel_value_label = tk.Label(self.click_panel)
+    self.pixel_value_label.grid(row=0,column=1)
+
+    self.dist_label = tk.Label(self.click_panel)
+    self.dist_label.grid(row=0,column=2)
+    self.dist_label.configure(text = "Distance")
+    self.dist_value_label = tk.Label(self.click_panel)
+    self.dist_value_label.grid(row=0,column=3)
+
+    self.lat_label = tk.Label(self.click_panel)
+    self.lat_label.grid(row=0,column=4)
+    self.lat_label.configure(text = "Lateral")
+    self.lat_value_label = tk.Label(self.click_panel)
+    self.lat_value_label.grid(row=0,column=5)
 
     # Game State Text....need method for updating this to offense and defense
     self.game_state_panel = tk.Frame(self.root)
@@ -648,7 +693,7 @@ class System_GUI():
         # convert image to be friendly with tkinter
         # rearrange color channel
         # print arg
-        self.root.after(100, self.update_img)
+        # self.root.after(4000, self.update_img)
 
         b,g,r = cv2.split(img)
         img = cv2.merge((r,g,b))
@@ -680,6 +725,8 @@ class System_GUI():
     ''' If the system is in manual mode, then take the click and 
         aim for the selected alrea. Otherwise, ignore the click.
     '''
+    row = arg.y
+    col = arg.x
 
     if self.manual_mode:
         # Turn the canvas click points into points that are relative to the image location
@@ -714,6 +761,18 @@ class System_GUI():
 
         # feed the information to the pong system
 
+    # output info to gui
+
+    # pixel
+    pixel_value_string = '({0}, {1})        '.format(row, col)
+    self.pixel_value_label.configure(text = pixel_value_string)
+
+    # get lateral and dist value
+    lateral, dist = self.vision_helper.calc_position_from_pixel(row, col)
+    self.lat_value_label.configure(text = str(lateral))
+    self.dist_value_label.configure(text = str(dist))
+
+
   def setup_state(self, arg=None):
     # print " setup "
     self.game_setup_text.config(bg='green2')
@@ -740,11 +799,14 @@ class System_GUI():
 
 def main():
 
+    # camera calibration
+    # select four corners of image to do translation points
+
     # Have the user dictate whether or not they are on offense
-    # side = Select_Side()
-    # selected = side.selected
-    # assert(selected)
-    # on_offense = side.on_offense
+    #side = Select_Side()
+    #selected = side.selected
+    #assert(selected)
+    #on_offense = side.on_offense
 
     rospy.init_node('pong_system')
 
