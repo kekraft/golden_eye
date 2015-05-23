@@ -207,7 +207,7 @@ class Vision_Helper:
         percent_dist = 1.0 - (dist_from_outer / outer_to_center_dist)
         
         # convert percentage distance of pixels to actual table width
-        lateral_dist = percent_dist / (self.table_width / 2.0)
+        lateral_dist = percent_dist * (self.table_width / 2.0)
 
         if on_right:
             return lateral_dist
