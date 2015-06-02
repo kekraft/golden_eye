@@ -29,26 +29,26 @@ Date: 5/22/2015
 '''
 
 class Vision_Helper:
-    table_width = 4.0 # manual
-    table_length = 8.0 # manual
-    dist_at_top = 8.0 # manual
-    dist_at_bottom = 5.0 # manual
+    table_width = 2.5 # manual
+    table_length = 6.0 # manual
+    dist_at_top = 6.0 # manual
+    dist_at_bottom = 2.0 # manual
     
     img_rows = 640.0 # manual
     img_cols = 480.0 # manual
 
-    # variables to get lateral position of cups bsed on initial calibration with top of cups
-    top_cup_left_row = 42.0 # click 1
-    top_cup_left_col = 0.0
+    # variables to get lateral position of cups bsed on initial calibration with top of cups.. init values were just for testing
+    top_cup_left_row = 63.0 # click 1
+    top_cup_left_col = 164.0
 
-    top_cup_right_row = 300.0 # click 2
-    top_cup_right_col = 0.0
+    top_cup_right_row = 86.0 # click 2
+    top_cup_right_col = 483.0
 
-    bot_cup_left_row = 33.0 # click 3
-    bot_cup_left_col = 0.0
+    bot_cup_left_row = 433.0 # click 3
+    bot_cup_left_col = 4.0
 
-    bot_cup_right_row = 330.0 # click 4
-    bot_cup_right_col = 150.0
+    bot_cup_right_row = 475.0 # click 4
+    bot_cup_right_col = 602.0
 
     def calc_position_from_pixel(self, row, col):
         # returns the distance from the robot to the pixel value
@@ -210,9 +210,9 @@ class Vision_Helper:
         lateral_dist = percent_dist * (self.table_width / 2.0)
 
         if on_right:
-            return lateral_dist
+            return lateral_dist + (self.table_width / 2.0)
         else:
-            return -lateral_dist
+            return -lateral_dist + (self.table_width / 2.0)
 
 class Calibrate_Pixel_2_World():
     click_ctr = 0

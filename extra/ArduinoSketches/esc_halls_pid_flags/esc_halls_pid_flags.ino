@@ -63,10 +63,18 @@ unsigned long last_report_time = 0, report_dt = 1000; //millis
 
 
 // PID variables
-double setPointA = 25, setPointB = 0, setPointC = 0;
+double setPointA = 0, setPointB = 0, setPointC = 0;
 double Outputa = 0, Outputb = 0, Outputc = 0;
 double min_out = 25, max_out = 180;
-double Kp = 1, Kd = 1, Ki = 1;
+//Motor A
+double kp_A = 0.001, kd_A = 0.05;
+double kp_low_A = 0.01, kd_low_A = 0;
+//Motor B
+double kp_B = 0.002, kd_B = 0.05;
+double kp_low_B = 0.05, kd_low_B = 0;
+//Motor C
+double kp_C = 0.002, kd_C = 0.05;
+double kp_low_C = 0.05, kd_low_C = 0;
 
 //PID function variables
 double set_point = 0.0, current_speed = 0.0;
@@ -110,10 +118,11 @@ void pid_controls_cb(const geometry_msgs::Vector3& pid_msg){
     //	pub_state.publish(&str);
     
     // Get motor speed A, B, and C from the message
+    /*
     Kp = pid_msg.x;
     Ki = pid_msg.y;
     Kd = pid_msg.z;
-    
+    */
     // publish command alerting the master system that we are ready
     //  std_msgs::String str;
     str.data = "Updated PID";
@@ -126,7 +135,7 @@ ros::Subscriber<geometry_msgs::Vector3> pid_sub("/launcher/pid_val", pid_control
 // Initially, not spinning
 void arm_servos(){
     // arm the speed controller, modify as necessary for your ESC
-    motorA.write(25);
+    motorA.write(15);
     motorB.write(0);
     motorC.write(0);
     //Long delay so enable
@@ -135,18 +144,20 @@ void arm_servos(){
     delay(5000);
 }
 
-double pid_calc(double current_speed,double set_point,double last_speed,unsigned int dt){
-    p = (set_point - current_speed) * Kp;
-    d = ((current_speed - last_speed)/(double)dt) * Kd;
-    double out = p - d + i;
-    if (out > max_out){
-        out = max_out;
-    }
-    if (out < min_out){
-        out = min_out;
-    }
-    return out;
-}
+//double pid_calc(double current_speed,double set_point,double last_speed,unsigned int dt){
+//    if(current_speed > 0){
+//        p = (set_point - current_speed) * Kp;
+//        d = ((current_speed - last_speed)/(double)dt) * Kd;
+//        double out = p + d;
+//        return out;
+//    }
+//    else{ 
+//        p = (set_point - current_speed) * Kp_low;
+//        d = ((current_speed - last_speed)/(double)dt) * Kd_low;
+//        double out = p + d;
+//        return out;
+//    }
+//}
 
 void setup(){
     noInterrupts();
@@ -167,21 +178,21 @@ void setup(){
     pinMode(ha1, INPUT);
     pinMode(ha2, INPUT);
     pinMode(ha3, INPUT);
-    attachInterrupt(ha1, motor_a_hall_change, RISING);
-    attachInterrupt(ha2, motor_a_hall_change, RISING);
-    attachInterrupt(ha3, motor_a_hall_change, RISING);
+    attachInterrupt(ha1, motor_a_hall_change, CHANGE);
+    attachInterrupt(ha2, motor_a_hall_change, CHANGE);
+    attachInterrupt(ha3, motor_a_hall_change, CHANGE);
     pinMode(hb1, INPUT);
     pinMode(hb2, INPUT);
     pinMode(hb3, INPUT);
-    attachInterrupt(hb1, motor_b_hall_change, RISING);
-    attachInterrupt(hb2, motor_b_hall_change, RISING);
-    attachInterrupt(hb3, motor_b_hall_change, RISING);
+    attachInterrupt(hb1, motor_b_hall_change, CHANGE);
+    attachInterrupt(hb2, motor_b_hall_change, CHANGE);
+    attachInterrupt(hb3, motor_b_hall_change, CHANGE);
     pinMode(hc1, INPUT);
     pinMode(hc2, INPUT);
     pinMode(hc3, INPUT);
-    attachInterrupt(hc1, motor_c_hall_change, RISING);
-    attachInterrupt(hc2, motor_c_hall_change, RISING);
-    attachInterrupt(hc3, motor_c_hall_change, RISING);
+    attachInterrupt(hc1, motor_c_hall_change, CHANGE);
+    attachInterrupt(hc2, motor_c_hall_change, CHANGE);
+    attachInterrupt(hc3, motor_c_hall_change, CHANGE);
     
     // Arm servos (set speeds to 0);
     arm_servos();
@@ -195,58 +206,45 @@ void loop(){
     This will recalculate a new speed value every 9 readings (9/14th rotation)
     */
     calc_time = millis();
-    if (calc_time >= 250 + (double)timeoldA/1000.00){ //|| hall_a_ctr >=15){
-        time = micros();
-        dt = time - timeoldA;
-        curSpeedA = ((double)hall_a_ctr * 1000000.0)/(14.0 * ((double)dt));
-        if (setPointA == 0 || setPointA == 25){
-            Outputa = 25;
-        }
-        else if (curSpeedA >= setPointA - (0.1 * (double)setPointA) && curSpeedA <= setPointA + (0.1 * (double)setPointA)){
-            Outputa = Outputa;
-        }
-        else if (curSpeedA <= setPointA + (0.1 * (double)setPointA)){
-            Outputa = Outputa + 1;
-        }
-        else{
-            Outputa = Outputa - 1;
-        }
-        if (Outputa < 25){
-            Outputa = 25;
-        }
-        if (Outputa > 160){
-            Outputa = 160;
-        }
-        timeoldA = time;
-        hall_a_ctr = 0;
-        /*
+    if (calc_time >= calc_dt + (double)timeoldA/1000.00 || hall_a_ctr >=4){        
         time = micros();
         /// hall counter in the numerator is there to integrate number of ticks
         // 1,000,000 in numerator is to convert microseconds to seconds
         // 14 is there because there are 14 hall readings per rotation
         dt = time - timeoldA;
         curSpeedA = ((double)hall_a_ctr * 1000000.0)/(14.0 * ((double)dt));
-//        curSpeedA = (curSpeedA + last_speed_A) / 2;
-        Outputa = pid_calc(curSpeedA, setPointA, last_speed_A,dt);
-        if (Outputa < 25){
-            Outputa = 25;
+        if(curSpeedA > 0){
+            p = (setPointA - curSpeedA) * kp_A;
+            d = ((curSpeedA - last_speed_A)/(double)dt) * kd_A;
+            Outputa += p + d;
         }
-        if (Outputa > 155){
-            Outputa = 155;
+        else{ 
+            p = (setPointA - curSpeedA) * kp_low_A;
+            d = ((curSpeedA - last_speed_A)/(double)dt) * kd_low_A;
+            Outputa += p + d;
         }
-        timeoldA = time;
+        Outputa = constrain(Outputa, 15, 173);
         hall_a_ctr = 0;
         last_speed_A = curSpeedA;
-        */
+        timeoldA = time;        
     }
-    
     
     //Update B speed and PID
     if (calc_time >= calc_dt + (double)timeoldB/1000.00 || hall_b_ctr >=3){
         time = micros();
         dt = time - timeoldB;
         curSpeedB = ((double)hall_b_ctr * 1000000.0)/(14.0 * ((double)dt));
-        Outputb = pid_calc(curSpeedB, setPointB, last_speed_B,dt);
+        if(curSpeedB > 0){
+            p = (setPointB - curSpeedB) * kp_B;
+            d = ((curSpeedB - last_speed_B)/(double)dt) * kd_B;
+            Outputb += p + d;
+        }
+        else{ 
+            p = (setPointB - curSpeedB) * kp_low_B;
+            d = ((curSpeedB - last_speed_B)/(double)dt) * kd_low_B;
+            Outputb += p + d;
+        }
+        Outputb = constrain(Outputb, 0, 179);
         timeoldB = time;
         hall_b_ctr = 0;
         last_speed_B = curSpeedB;
@@ -256,7 +254,17 @@ void loop(){
         time = micros();
         dt = time - timeoldC;
         curSpeedC = ((double)hall_c_ctr * 1000000.0)/(14.0 * ((double)dt));
-        Outputc = pid_calc(curSpeedC, setPointC, last_speed_C,dt);
+        if(curSpeedC > 0){
+            p = (setPointC - curSpeedC) * kp_C;
+            d = ((curSpeedC - last_speed_C)/(double)dt) * kd_C;
+            Outputc += p + d;
+        }
+        else{ 
+            p = (setPointC - curSpeedC) * kp_low_C;
+            d = ((curSpeedC - last_speed_C)/(double)dt) * kd_low_C;
+            Outputc += p + d;
+        }
+        Outputc = constrain(Outputc, 0, 180);
         timeoldC = time;
         hall_c_ctr = 0;
         last_speed_C = curSpeedC;
@@ -267,6 +275,7 @@ void loop(){
         speed_msg.y = curSpeedB;
         speed_msg.z = curSpeedC;
         pub_speed.publish(&speed_msg);
+        last_report_time = calc_time;
     }
     /*
     motorA.write(setPointA);
@@ -276,6 +285,7 @@ void loop(){
     motorA.write(Outputa);
     motorB.write(Outputb);
     motorC.write(Outputc);
+    
 }
 
 void motor_a_hall_change(){

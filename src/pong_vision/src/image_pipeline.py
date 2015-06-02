@@ -12,6 +12,7 @@ import sift
 class Image_Pipeline:
     def __init__(self, verbose=True):
         self.verbose = verbose
+        self.calibrated = False
 
         self.orig_image = None
         self.working_image = None
@@ -84,8 +85,15 @@ class Image_Pipeline:
         roi = self.working_image[self.crop_x1:self.crop_x2, self.crop_y1:self.crop_y2]
         if self.verbose:
             print "Cropped region to get cups only"
+            # cv2.startWindowThread()
             cv2.imshow("Cropped ROI", roi)
             cv2.waitKey()
+            cv2.destroyWindow("Cropped ROI")
+
+            # dirty hack to make sure things finish the way they are supposed to
+            cv2.waitKey(1)
+            cv2.waitKey(1)
+            cv2.waitKey(1)
 
         self.working_image = roi
 
@@ -263,6 +271,66 @@ class Image_Pipeline:
     def pixel_2_world(self, x,y):
         if self.verbose:
             print "Pixel Coordinates ", x, y
+
+    def calibrate(self, image):
+
+        # Calibrate the crop section
+        self.orig_image = image
+        calibrate_crop = Calibrate_Crop()
+        calibrate_crop.start_calibration(image)
+
+        self.crop_x1 = calibrate_crop.top_left_row
+        self.crop_x2 = calibrate_crop.bot_right_row
+        self.crop_y1 = calibrate_crop.top_left_col
+        self.crop_y2 = calibrate_crop.bot_right_col
+
+        self.working_image = self.orig_image.copy()
+
+        self.crop_cups()
+
+        # calibrate the contour stuff
+
+
+
+
+class Calibrate_Crop():
+    click_ctr = 0
+
+    def select_corners(self, event, x, y, flags, param):
+        
+        if event == cv2.EVENT_LBUTTONDOWN:
+            # print "lbutton down"
+
+            self.click_ctr = self.click_ctr + 1
+
+            if self.click_ctr == 1:
+                self.top_left_row = y # click 1
+                self.top_left_col = x
+
+            if self.click_ctr == 2:
+                self.bot_right_row = y
+                self.bot_right_col = x
+    
+
+    def start_calibration(self, img = None):
+        self.window = cv2.namedWindow("Select 2 Corners | Top Left, Bottom Right")
+        cv2.setMouseCallback("Select 2 Corners | Top Left, Bottom Right", self.select_corners)
+
+        assert(img != None)
+
+        while True:
+            # display the image and wait for a keypress
+            # if img == None:
+            #     img = cv2.imread()
+
+            cv2.imshow("Select 2 Corners | Top Left, Bottom Right", img)
+            key = cv2.waitKey(1) & 0xFF
+
+            if self.click_ctr == 2:
+                break
+         
+        cv2.destroyAllWindows()
+
 
 
 if __name__ == '__main__':
