@@ -20,6 +20,13 @@
     <param name="baud" value="9600"/>
   </node>
 
+  <!-- Start ROS serial with game state id and dryer relay -->
+  <!-- !!!!!! Check port value !!!!!!! -->
+  <node pkg="rosserial_python" type="serial_node.py" name="dryer_node" respawn="true">
+    <param name="port" value="/dev/ttyACM2"/>
+    <param name="baud" value="9600"/>
+  </node>
+
   <!-- Start system game script -->
   <node pkg="pong_system" type="pong_system.py" name="central_node" required="true" output="screen"/>
 

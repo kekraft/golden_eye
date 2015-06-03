@@ -71,7 +71,7 @@ class Pong_System:
         self.motor_c.speed = 0
 
         # Subscribers to each subsystem state
-        self.game_state_sub = rospy.Subscriber('/game/state', String, self.state_cb)
+        self.game_state_sub = rospy.Subscriber('/game_side/state', String, self.state_cb)
         self.launcher_state_sub = rospy.Subscriber('/launcher/state', String, self.state_cb)
         self.loader_state_sub = rospy.Subscriber('/loader/state', String, self.state_cb)
         self.vision_state_sub = rospy.Subscriber('/vision/state', String, self.state_cb)
@@ -83,6 +83,7 @@ class Pong_System:
         # Publishers for each topic that the subsystems listen to
         # Loader cmd (True = Load, False = Do nothing)
         self.loader_pub = rospy.Publisher('/loader/load_cmd', Bool, queue_size=10)
+        self.dryer_pub = rospy.Publisher('/dryer/cmd', Bool, queue_size=10)
 
         # launcher velocity and pid commands
         # Vector3.x = motor a speed, Vector3.y = motor b speed, Vector3.z = motor c speed
@@ -96,7 +97,7 @@ class Pong_System:
         # subscribe to game state
         # a true message sent to this topic means we are on offense and should shoot
         # a false message sent to this topic means we are on defense and should do targeting
-        self.game_offensive_sub = rospy.Subscriber('/game/offense', Bool, self.game_side_cb)
+        self.game_offensive_sub = rospy.Subscriber('/game_side/offense', String, self.game_side_cb)
 
         ######## Do inital targetting ##################
 
@@ -147,7 +148,9 @@ class Pong_System:
                 If on defense, go ahead and set the motors to 
                  spin at the targeted cup
         '''
-        if (msg.data is True) and (self.state is not Game_State.SETUP):
+        print "Recieved game state message: on offense? ", msg.data
+
+        if (msg.data = True) and (self.state is not Game_State.SETUP):
             rospy.loginfo("On offense.")
 
             if self.targeted is False:
@@ -159,6 +162,8 @@ class Pong_System:
             self.load()
 
             self.targeted = False
+
+            self.state = Game_State.OFFENSE
 
         else:  
 
@@ -173,6 +178,8 @@ class Pong_System:
             cmd.y = self.motor_b.vel
             cmd.z = self.motor_c.vel
             self.launcher_motor_vel_pub.publish(cmd)
+
+            self.state = Game_State.DEFENSE
 
     def init_calibration(self):
         ''' Initial calibration consists of getting the vision 
@@ -190,6 +197,20 @@ class Pong_System:
         cmd = Bool()
         cmd.data = True
         self.loader_pub.publish(cmd)
+
+        # might need to delay here
+        print "letting screw turn for 1 second"
+        pause(1)
+
+
+        # turn dryer on
+        self.dryer_pub.publish(cmd)
+        print "Turning dryer on for 3 seconds"
+        pause(3)
+
+        # turn dryer off
+        cmd.data = False
+        self.dryer_pub.publish(cmd)
 
     def update_motor_speed(self, motor_a_speed, motor_b_speed, motor_c_speed):
         # rospy.loginfo("Updating motor speeds")
@@ -655,6 +676,9 @@ class System_GUI():
     # # display updated speed occasionally
     self.root.after(100, self.update_speeds_label)
 
+    # # display game state occassionally
+    self.root.after(100, self.update_game_state_label)
+
     
 
   def calibrate(self, arg):
@@ -769,6 +793,21 @@ class System_GUI():
 
     # # display updated speed occasionally
     self.root.after(100, self.update_speeds_label)
+
+
+  def update_game_state_label(self, arg=None):
+    self.game_state = self.pong_system.state 
+
+    if self.game_state == Game_State.OFFENSE:
+        self.offense_state()
+
+    elif self.game_state == Game_State.DEFENSE:
+        self.defense_state()
+
+    else:
+        self.setup_state()
+
+    self.root.after(100, self.update_game_state_label)
 
 
   def img_clicked_button(self, arg):
