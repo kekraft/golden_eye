@@ -263,6 +263,9 @@ class Calibrate_Pixel_2_World():
                 break
          
         cv2.destroyAllWindows()
+        cv2.waitKey(1)
+        cv2.waitKey(1)
+        cv2.waitKey(1)
 
 
 

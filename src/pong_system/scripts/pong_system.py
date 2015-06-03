@@ -229,18 +229,24 @@ class Pong_System:
     def shutdown(self, msg):
         rospy.signal_shutdown(msg)
 
-    def target_and_show(self):
+    def calibrate_image_pipeline(self):
         # make sure there is an image...wait here if there isn't one
         while (self.img == None):
             print "No image yet"
             pass
 
         # instantiate pipeline object
-        ip = Image_Pipeline()
-        # ip.run_pipeline(self.img)
-        ip.calibrate(self.img)
+        self.ip = Image_Pipeline()
+        self.ip.calibrate(self.img)
 
+    def target_and_show(self):
+        # make sure there is an image...wait here if there isn't one
+        while (self.img == None):
+            print "No image yet"
+            pass
 
+        # run image pipeline object
+        self.ip.run_pipeline(self.img)
 
 
 
@@ -641,6 +647,7 @@ class System_GUI():
     self.root.bind("p", self.update_img)
     self.root.bind("c", self.calibrate)
     self.root.bind("t", self.target)
+    self.root.bind("s", self.save_img)
 
     # # display updated picture occasionally
     self.root.after(100, self.update_img)
@@ -651,6 +658,7 @@ class System_GUI():
     
 
   def calibrate(self, arg):
+    ## most of this method should really reside in pong system
     # camera calibration
     # select four corners of image to do translation points
     corner_calibrate = Calibrate_Pixel_2_World()
@@ -670,6 +678,9 @@ class System_GUI():
 
         self.vision_helper.bot_cup_right_row = corner_calibrate.bot_cup_right_row
         self.vision_helper.bot_cup_right_col = corner_calibrate.bot_cup_right_col
+
+        ## now do image pipeline calibration
+        self.pong_system.calibrate_image_pipeline()
 
   def start_gui(self):
     # update image 
@@ -849,6 +860,16 @@ class System_GUI():
     # display automatic targetting sequence
     self.pong_system.target_and_show()
 
+  def save_img(self, arg=None):
+    # save the current cameras image to disk
+    # print "Saving image"
+    directory = os.path.realpath(__file__)
+    # print directory
+    img_path = os.path.join(directory, '../pong_system_img.jpg')
+    img_path = os.path.abspath(img_path)
+    img = self.pong_system.img
+    cv2.imwrite(img_path, img)
+    # print "image saved"
 
 def main():
 

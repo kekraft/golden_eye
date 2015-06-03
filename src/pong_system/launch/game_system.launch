@@ -11,7 +11,7 @@
   <node pkg="rosserial_python" type="serial_node.py" name="launcher_node" respawn="true">
     <param name="port" value="/dev/ttyACM1"/>
     <param name="baud" value="9600"/>
-  </node>
+  </node>  
 
   <!-- Start ROS serial with loader -->
   <!-- !!!!!! Check port value !!!!!!! -->
@@ -21,6 +21,6 @@
   </node>
 
   <!-- Start system game script -->
-  <node pkg="pong_system" type="pong_system.py" name="central_node" required="true"/>
+  <node pkg="pong_system" type="pong_system.py" name="central_node" required="true" output="screen"/>
 
  </launch>

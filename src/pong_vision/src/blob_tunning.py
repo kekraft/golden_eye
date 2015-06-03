@@ -13,8 +13,8 @@ class Blob_Detect:
     def __init__(self, image):
         self.image = image
 
-        self.minThreshold = 1;
-        self.maxThreshold = 2000;
+        self.minThreshold = 1
+        self.maxThreshold = 2000
          
         # Filter by Area.
         self.filterByArea = True
@@ -73,8 +73,12 @@ class Blob_Detect:
         cv2.createTrackbar( "Min Area", "image", 1, 100, self.minArea_update)
 
         cv2.imshow('image', img)
+        cv2.waitKey()
         0xFF & cv2.waitKey()
         cv2.destroyAllWindows()
+        cv2.waitKey(1)
+        cv2.waitKey(1)
+        cv2.waitKey(1)
 
 
     def refined_blob_detection(self, img):
@@ -120,12 +124,22 @@ class Blob_Detect:
         # # cv2.waitKey(1)
         # plt.imshow(im_with_keypoints)
 
+    def calibrate(self, img):
+        
+        img = cv2.GaussianBlur(img,(9,9),0)
+        img = cv2.resize(img, (0,0), fx = 5, fy = 5) 
+
+        self.image = img
+        self.main(img)
+
+
 if __name__ == '__main__':
     # img = cv2.imread("masked.jpg", 0)
     img = cv2.imread("images/trial.cup_ring.jpg", 0)
     # img = cv2.resize(img, (0,0), fx = 5, fy = 5) 
     img = cv2.GaussianBlur(img,(9,9),0)
     img = cv2.resize(img, (0,0), fx = 5, fy = 5) 
+    
     # return sharp
     img = sift.sharpen(img)
 

@@ -50,3 +50,8 @@ power supply to loader coding
 black = negative
 green = positive
 
+
+##### To run the robot ####
+cd AppliedRob/golden_eye_ws/
+source devel/setup.bash
+roslaunch pong_system game_system.launch

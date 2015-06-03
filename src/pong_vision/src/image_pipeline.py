@@ -8,6 +8,7 @@ import copy
 import random
 
 import sift
+from blob_tunning import *
 
 class Image_Pipeline:
     def __init__(self, verbose=True):
@@ -64,7 +65,7 @@ class Image_Pipeline:
         self.working_image = image.copy()
         if self.verbose:
             print "Original Image"
-            cv2.imshow("Oirignal Image", image)
+            cv2.imshow("Original Image", image)
             cv2.waitKey()
 
         # crop the image
@@ -102,9 +103,10 @@ class Image_Pipeline:
         ''' Makes the working image the cup rims with the background 
             all in black.  Assumes the cups are the largest found contour by area '''
 
-        # filter the image
+        # filter the image....what if we did a nother blur after
         img = cv2.bilateralFilter(self.working_image, 11, 17, 17)
         img = cv2.blur(img,(3,3))
+        # img = cv2.blur(img, (7,7))
 
         # get the canny edges
         img = cv2.Canny(img, self.canny_cup_blob_param1, self.canny_cup_blob_param2)
@@ -112,6 +114,12 @@ class Image_Pipeline:
             print "Canny edges found in cup rim region"
             cv2.imshow("Canny Edges in Get Cup Rims", img)
             cv2.waitKey()
+            cv2.destroyWindow("Canny Edges in Get Cup Rims")
+
+            # dirty hack to make sure things finish the way they are supposed to
+            cv2.waitKey(1)
+            cv2.waitKey(1)
+            cv2.waitKey(1)
 
         # get contours of cup rims
         largest_contour = self.get_largest_contour(img)
@@ -149,11 +157,15 @@ class Image_Pipeline:
             masked_copy = image.copy()
             cv2.resize(masked_copy, (0,0), fx = 25, fy = 25)
             # cv2.imshow("Mask", mask)
-            # cv2.imshow("After", masked_copy)
-            # cv2.waitKey()
-            plt.imshow(masked_copy)
-            plt.title("Mask - Enlarged")
-            plt.show()
+            cv2.imshow("Masked (Enlarged)", masked_copy)
+            cv2.waitKey()
+            cv2.destroyWindow("Masked (Enlarged)")
+            cv2.waitKey(1)
+            cv2.waitKey(1)
+            cv2.waitKey(1)
+            # plt.imshow(masked_copy)
+            # plt.title("Mask - Enlarged")
+            # plt.show()
             # cv2.imwrite("masked.jpg", image)
             # cv2.imwrite("mask.jpg", image)
 
@@ -166,17 +178,21 @@ class Image_Pipeline:
 
         cnts = sorted(contours0, key = cv2.contourArea, reverse = True)[:10]
 
+        print "have the contours sorted"
+
         # mask image with the largest contour by area to only get cup rims
         if len(cnts) > 0:
             main_cnt = cnts[0]
             perimeter = cv2.arcLength(main_cnt,True)
 
             if self.verbose:
+                print "about to display image with plt"
                 image_copy = copy.deepcopy(img)
                 cv2.drawContours(image_copy, [main_cnt], -1, (0, 255, 0), 3)
-                plt.imshow(image_copy)
-                plt.title("Largest contour")
-                plt.show()
+                # plt.imshow(image_copy)
+                # plt.title("Largest contour")
+                # plt.show()
+                print "image displayed"
 
             return main_cnt
 
@@ -190,11 +206,15 @@ class Image_Pipeline:
 
         if self.verbose:
             print "Canny edge dectection done"
-            plt.imshow(img)
-            plt.title("Canny Edge Detection")
-            plt.show()
+            # plt.imshow(img)
+            # plt.title("Canny Edge Detection")
+            # plt.show()
             cv2.imshow("canny edge", img)
             cv2.waitKey()
+            cv2.destroyWindow("canny edge")
+            cv2.waitKey(1)
+            cv2.waitKey(1)
+            cv2.waitKey(1)
         
         # blob detection to get inside of cup
         if self.verbose:
@@ -205,16 +225,22 @@ class Image_Pipeline:
         img = sift.sharpen(img)
         blobs = self.refined_blob_detection(img)
 
-        # get center of mass of cup blob or individual cup
-        if self.verbose:
-            for blob in blobs:
-                print "Blob centered at: ", blob.pt
+        if (blobs != None and blobs > 0):
+            # get center of mass of cup blob or individual cup
+            if self.verbose:
+                for blob in blobs:
+                    print "Blob centered at: ", blob.pt
+            
+            blob = random.choice(blobs)
+            blob_cntr = blob.pt
 
-        blob = random.choice(blobs)
-        blob_cntr = blob.pt
-
-        x = int(blob_cntr[0])
-        y = int(blob_cntr[1])
+            x = int(blob_cntr[0])
+            y = int(blob_cntr[1])
+        else:
+            # just return center of image?? and alert user?
+            print "No blob found"
+            x = 0
+            y = 0
         
         return x, y
 
@@ -263,8 +289,12 @@ class Image_Pipeline:
         # # Show keypoints
         if self.verbose:
             print "Blob detection for a single cup"
-            cv2.imshow("image", im_with_keypoints)
+            cv2.imshow("Blobs Found", im_with_keypoints)
             cv2.waitKey()
+            cv2.destroyWindow("Blobs Found")
+            cv2.waitKey(1)
+            cv2.waitKey(1)
+            cv2.waitKey(1)
 
         return keypoints
 
@@ -274,7 +304,7 @@ class Image_Pipeline:
 
     def calibrate(self, image):
 
-        # Calibrate the crop section
+        ##### Calibrate the crop section
         self.orig_image = image
         calibrate_crop = Calibrate_Crop()
         calibrate_crop.start_calibration(image)
@@ -288,9 +318,31 @@ class Image_Pipeline:
 
         self.crop_cups()
 
-        # calibrate the contour stuff
+        ##### calibrate the blob tunning
+        # blob_detector = Blob_Detect(image=None)
+        # blob_detector.calibrate(self.working_image.copy())
 
+        # # store the values
+        # self.minThreshold = blob_detector.minThreshold
+        # self.maxThreshold = blob_detector.maxThreshold
 
+        # self.filterByArea = blob_detector.filterByArea
+        # self.minArea = blob_detector.minArea
+
+        # self.filterByCircularity = blob_detector.filterByCircularity
+        # self.minCircularity = blob_detector.minCircularity
+         
+        # self.filterByConvexity = blob_detector.filterByConvexity
+        # self.minConvexity = blob_detector.minConvexity
+         
+        # self.filterByInertia = blob_detector.filterByInertia
+        # self.minInertiaRatio = blob_detector.minInertiaRatio
+
+        ##### Cup rim calibration
+
+    # def cup_rim_calibration():
+    #     # canny detection
+    #     Canny(img, self.canny_cup_blob_param1, self.canny_cup_blob_param2)
 
 
 class Calibrate_Crop():
