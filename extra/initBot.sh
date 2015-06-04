@@ -30,8 +30,8 @@ echo "Logs:" >> ${LOG_FILE}
 . /opt/ros/indigo/setup.bash >> ${LOG_FILE}
 cd ~/AppliedRob/golden_eye_ws/
 source ./devel/setup.sh
-roslaunch pong_vision vision.launch >> ${LOG_FILE}
-sleep 5
+# roslaunch pong_vision vision.launch >> ${LOG_FILE}
+# sleep 5
 # PATH=$PATH:/opt/arduino-1.6.3/ &
 # roscore 
 # rqt

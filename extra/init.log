@@ -654,3 +654,192 @@ started core service [/rosout]
 shutting down processing monitor...
 ... shutting down processing monitor complete
 [1mdone[0m
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 15:16:55 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 15:19:11 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 15:27:29 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 15:29:20 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 15:34:32 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 15:47:06 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 15:55:27 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 16:28:34 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 16:52:39 PDT 2015
+#############################################
+
+Logs:
+... logging to /home/gloin/.ros/log/9ed2e04e-0a4b-11e5-ae37-b723408f2c76/roslaunch-gloin-1898.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch
+[1mstarted roslaunch server http://gloin:49446/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: indigo
+ * /rosversion: 1.11.10
+
+NODES
+  /
+    camera_node (uvc_camera/uvc_camera_node)
+    cup_detector (pong_vision/updated_cup_detection.py)
+
+auto-starting new master
+[1mprocess[master]: started with pid [1969][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch http://localhost:11311
+[1msetting /run_id to 9ed2e04e-0a4b-11e5-ae37-b723408f2c76[0m
+[1mprocess[rosout-1]: started with pid [1989][0m
+started core service [/rosout]
+[1mprocess[camera_node-2]: started with pid [2006][0m
+[1mprocess[cup_detector-3]: started with pid [2016][0m
+[cup_detector-3] killing on exit
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 17:03:59 PDT 2015
+#############################################
+
+Logs:
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 17:05:45 PDT 2015
+#############################################
+
+Logs:
+... logging to /home/gloin/.ros/log/734fe618-0a4d-11e5-89a2-1723f053f4db/roslaunch-gloin-1894.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch
+[1mstarted roslaunch server http://gloin:59242/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: indigo
+ * /rosversion: 1.11.10
+
+NODES
+  /
+    camera_node (uvc_camera/uvc_camera_node)
+    cup_detector (pong_vision/updated_cup_detection.py)
+
+auto-starting new master
+[1mprocess[master]: started with pid [1966][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/gloin/AppliedRob/golden_eye_ws/src/pong_vision/launch/vision.launch http://localhost:11311
+[1msetting /run_id to 734fe618-0a4d-11e5-89a2-1723f053f4db[0m
+[1mprocess[rosout-1]: started with pid [1987][0m
+started core service [/rosout]
+[1mprocess[camera_node-2]: started with pid [2004][0m
+[1mprocess[cup_detector-3]: started with pid [2014][0m
+[1m[cup_detector-3] process has finished cleanly
+log file: /home/gloin/.ros/log/734fe618-0a4d-11e5-89a2-1723f053f4db/cup_detector-3*.log[0m
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+
+
+
+
+#############################################
+Running file
+Wed Jun 3 17:13:46 PDT 2015
+#############################################
+
+Logs:

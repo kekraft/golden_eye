@@ -302,6 +302,44 @@ class Image_Pipeline:
         if self.verbose:
             print "Pixel Coordinates ", x, y
 
+    def calibrate_get_cup_rims(self):
+        ''' Makes the working image the cup rims with the background 
+        all in black.  Assumes the cups are the largest found contour by area '''
+
+        # filter the image....what if we did a nother blur after
+        img = cv2.bilateralFilter(self.working_image, 11, 17, 17)
+        img = cv2.blur(img,(3,3))
+        # img = cv2.blur(img, (7,7))
+
+        # get the canny edges
+        img = cv2.Canny(img, self.canny_cup_blob_param1, self.canny_cup_blob_param2)
+        if self.verbose:
+            print "Canny edges found in cup rim region"
+            cv2.imshow("Canny Edges in Get Cup Rims", img)
+            cv2.waitKey()
+            cv2.destroyWindow("Canny Edges in Get Cup Rims")
+
+            # dirty hack to make sure things finish the way they are supposed to
+            cv2.waitKey(1)
+            cv2.waitKey(1)
+            cv2.waitKey(1)
+
+        # get contours of cup rims
+        largest_contour = self.get_largest_contour(img)
+
+        # mask the largest contour with the working image
+        if largest_contour is None:
+            print "No contour found"
+        else:
+            self.mask_image([largest_contour])
+
+    def calibrate_pipeline(self, image):
+        # get cup rims
+        self.calibrate_get_cup_rims()
+
+        # # identify and select individual cup
+        # (x,y) = self.calibrate_select_cup_pixel()
+
     def calibrate(self, image):
 
         ##### Calibrate the crop section
@@ -317,6 +355,8 @@ class Image_Pipeline:
         self.working_image = self.orig_image.copy()
 
         self.crop_cups()
+
+        self.calibrate_pipeline()
 
         ##### calibrate the blob tunning
         # blob_detector = Blob_Detect(image=None)
@@ -346,6 +386,44 @@ class Image_Pipeline:
 
 
 class Calibrate_Crop():
+    click_ctr = 0
+
+    def select_corners(self, event, x, y, flags, param):
+        
+        if event == cv2.EVENT_LBUTTONDOWN:
+            # print "lbutton down"
+
+            self.click_ctr = self.click_ctr + 1
+
+            if self.click_ctr == 1:
+                self.top_left_row = y # click 1
+                self.top_left_col = x
+
+            if self.click_ctr == 2:
+                self.bot_right_row = y
+                self.bot_right_col = x
+    
+
+    def start_calibration(self, img = None):
+        self.window = cv2.namedWindow("Select 2 Corners | Top Left, Bottom Right")
+        cv2.setMouseCallback("Select 2 Corners | Top Left, Bottom Right", self.select_corners)
+
+        assert(img != None)
+
+        while True:
+            # display the image and wait for a keypress
+            # if img == None:
+            #     img = cv2.imread()
+
+            cv2.imshow("Select 2 Corners | Top Left, Bottom Right", img)
+            key = cv2.waitKey(1) & 0xFF
+
+            if self.click_ctr == 2:
+                break
+         
+        cv2.destroyAllWindows()
+
+class Calibrate_Cup_Rims():
     click_ctr = 0
 
     def select_corners(self, event, x, y, flags, param):

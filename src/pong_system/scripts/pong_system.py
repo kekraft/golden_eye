@@ -50,9 +50,9 @@ from image_pipeline import *
 
 class Pong_System:
     def __init__(self, on_offense = False):
-        self.state = Game_State.SETUP
+        self.game_state = Game_State.SETUP
         self.targeted = False
-        self.manual = False
+        self.manual = True
 
         self.img = None
 
@@ -97,15 +97,15 @@ class Pong_System:
         # subscribe to game state
         # a true message sent to this topic means we are on offense and should shoot
         # a false message sent to this topic means we are on defense and should do targeting
-        self.game_offensive_sub = rospy.Subscriber('/game_side/offense', String, self.game_side_cb)
+        self.game_offensive_sub = rospy.Subscriber('/game_side/offense', Bool, self.game_side_cb)
 
         ######## Do inital targetting ##################
 
         ######### Set game state #######################
         if on_offense:
-            self.state = Game_State.OFFENSE
+            self.game_state = Game_State.OFFENSE
         else:
-            self.state = Game_State.DEFENSE
+            self.game_state = Game_State.DEFENSE
 
         ## Make sure mototrs start at correct speeds
         self.update_motor_speed(self.motor_a.pwm, self.motor_b.pwm, self.motor_c.pwm)
@@ -150,7 +150,7 @@ class Pong_System:
         '''
         print "Recieved game state message: on offense? ", msg.data
 
-        if (msg.data = True) and (self.state is not Game_State.SETUP):
+        if (msg.data == True) and (self.game_state is not Game_State.SETUP):
             rospy.loginfo("On offense.")
 
             if self.targeted is False:
@@ -163,7 +163,7 @@ class Pong_System:
 
             self.targeted = False
 
-            self.state = Game_State.OFFENSE
+            self.game_state = Game_State.OFFENSE
 
         else:  
 
@@ -179,7 +179,7 @@ class Pong_System:
             cmd.z = self.motor_c.vel
             self.launcher_motor_vel_pub.publish(cmd)
 
-            self.state = Game_State.DEFENSE
+            self.game_state = Game_State.DEFENSE
 
     def init_calibration(self):
         ''' Initial calibration consists of getting the vision 
@@ -200,13 +200,13 @@ class Pong_System:
 
         # might need to delay here
         print "letting screw turn for 1 second"
-        pause(1)
+        time.sleep(1)
 
 
         # turn dryer on
         self.dryer_pub.publish(cmd)
         print "Turning dryer on for 3 seconds"
-        pause(3)
+        time.sleep(3)
 
         # turn dryer off
         cmd.data = False
@@ -268,6 +268,17 @@ class Pong_System:
 
         # run image pipeline object
         self.ip.run_pipeline(self.img)
+
+    def run_dryer(self, run_it=True):
+        cmd = Bool()
+
+        if run_it == True:
+            cmd.data = True
+        else:
+            cmd.data = False
+
+        "Updating dryer"
+        self.dryer_pub.publish(cmd)
 
 
 
@@ -366,6 +377,8 @@ class System_GUI():
   def __init__(self, img, pong_system):
     self.manual_mode = True
     self.game_state = Game_State.SETUP
+
+    self.dryer_on = False
 
     # vision helper class
     self.vision_helper = Vision_Helper()
@@ -669,6 +682,7 @@ class System_GUI():
     self.root.bind("c", self.calibrate)
     self.root.bind("t", self.target)
     self.root.bind("s", self.save_img)
+    self.root.bind("d", self.alt_dryer)
 
     # # display updated picture occasionally
     self.root.after(100, self.update_img)
@@ -796,7 +810,9 @@ class System_GUI():
 
 
   def update_game_state_label(self, arg=None):
-    self.game_state = self.pong_system.state 
+    self.game_state = self.pong_system.game_state
+    # print "Game State"
+    # print self.game_state 
 
     if self.game_state == Game_State.OFFENSE:
         self.offense_state()
@@ -909,6 +925,12 @@ class System_GUI():
     img = self.pong_system.img
     cv2.imwrite(img_path, img)
     # print "image saved"
+
+  def alt_dryer(self, arg=None):
+    print "alternating dryer"
+    self.pong_system.run_dryer(self.dryer_on)
+
+    self.dryer_on = not self.dryer_on
 
 def main():
 
