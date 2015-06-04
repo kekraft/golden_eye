@@ -3,8 +3,10 @@
 #include <std_msgs/String.h>
 #include <std_msgs/Bool.h>
 
-int state_switch = 5;
-int dryer_relay = 3;
+int state_switch = 2;
+int dryer_relay = 8;
+
+int time_old = 0;
 
 ros::NodeHandle nh;
 
@@ -28,20 +30,20 @@ void dryer_cmd_cb(const std_msgs::Bool& cmd){
 
 ros::Subscriber<std_msgs::Bool> dryer_sub("/dryer/cmd", dryer_cmd_cb);
 
-void game_state_change(){
-  if (HIGH == digitalRead(state_switch)) {
-     // OFFENSE
-     state_msg.data = "OFFENSE";
-     side_msg.data = true;
-          
-  } else {
-     state_msg.data = "DEFENSE";
-     side_msg.data = false;
-  }
-  
-  state_pub.publish(&state_msg);
-  side_pub.publish(&side_msg);  
-}
+//void game_state_change(){
+//  if (HIGH == digitalRead(state_switch)) {
+//     // OFFENSE
+//     state_msg.data = "OFFENSE";
+//     side_msg.data = true;
+//          
+//  } else {
+//     state_msg.data = "DEFENSE";
+//     side_msg.data = false;
+//  }
+//  
+//  state_pub.publish(&state_msg);
+//  side_pub.publish(&side_msg);  
+//}
 
 
 
@@ -60,10 +62,27 @@ void setup() {
   digitalWrite(dryer_relay,HIGH);
   
   // attach an interrupt to get game state
-  attachInterrupt(1, game_state_change, CHANGE);
+//  attachInterrupt(0, game_state_change, CHANGE);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+//  if (millis() - time_old > 500){
+//    if (HIGH == digitalRead(state_switch)) {
+//       // OFFENSE
+//       state_msg.data = "OFFENSE";
+//       side_msg.data = true;
+//            
+//    } else {
+//       state_msg.data = "DEFENSE";
+//       side_msg.data = false;
+//    }
+//    
+//    state_pub.publish(&state_msg);
+//    side_pub.publish(&side_msg); 
+//  
+//    time_old = millis();
+//  }
+  
   nh.spinOnce();
 }

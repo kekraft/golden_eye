@@ -23,7 +23,7 @@ const int switch_pin = 2;
 const int led_pin = 13;
 const int motor_pin = 3;
 
-const int motor_speed = 127;
+const int motor_speed = 150;
 
 //bool last_reading;
 //long last_debounce_time=0;

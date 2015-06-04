@@ -200,13 +200,13 @@ class Pong_System:
 
         # might need to delay here
         print "letting screw turn for 1 second"
-        time.sleep(1)
+        time.sleep(2)
 
 
         # turn dryer on
         self.dryer_pub.publish(cmd)
         print "Turning dryer on for 3 seconds"
-        time.sleep(3)
+        time.sleep(6)
 
         # turn dryer off
         cmd.data = False
